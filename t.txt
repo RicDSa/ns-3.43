@@ -1,0 +1,816 @@
+In file included from [01m[K/home/mpais/ns-allinone-3.43/ns-3.43/src/mesh/model/dot11s/hwmp-protocol.cc:9[m[K:
+[01m[K/home/mpais/ns-allinone-3.43/ns-3.43/src/mesh/model/dot11s/hwmp-protocol.h:[m[K In constructor ‘[01m[Kns3::dot11s::HwmpProtocol::[01;32m[KHwmpProtocol[m[K()[m[K’:
+[01m[K/home/mpais/ns-allinone-3.43/ns-3.43/src/mesh/model/dot11s/hwmp-protocol.h:673:10:[m[K [01;35m[Kwarning: [m[K‘[01m[Kns3::dot11s::HwmpProtocol::m_rfFlag[m[K’ will be initialized after [[01;35m[K-Wreorder[m[K]
+  673 |     bool [01;35m[Km_rfFlag[m[K;                  //!< Reply and forward flag
+      |          [01;35m[K^~~~~~~~[m[K
+[01m[K/home/mpais/ns-allinone-3.43/ns-3.43/src/mesh/model/dot11s/hwmp-protocol.h:222:10:[m[K [01;35m[Kwarning: [m[K  ‘[01m[Kbool ns3::dot11s::HwmpProtocol::m_firstTtlStored[m[K’ [[01;35m[K-Wreorder[m[K]
+  222 |     bool [01;35m[Km_firstTtlStored[m[K;
+      |          [01;35m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/home/mpais/ns-allinone-3.43/ns-3.43/src/mesh/model/dot11s/hwmp-protocol.cc:153:1:[m[K [01;35m[Kwarning: [m[K  when initialized here [[01;35m[K-Wreorder[m[K]
+  153 | [01;35m[KHwmpProtocol[m[K::HwmpProtocol()
+      | [01;35m[K^~~~~~~~~~~~[m[K
+[01m[K/home/mpais/ns-allinone-3.43/ns-3.43/src/mesh/model/dot11s/hwmp-protocol.cc:[m[K In member function ‘[01m[Kvirtual bool ns3::dot11s::HwmpProtocol::[01;32m[KRequestRoute[m[K(uint32_t, ns3::Mac48Address, ns3::Mac48Address, ns3::Ptr<const ns3::Packet>, uint16_t, ns3::MeshL2RoutingProtocol::RouteReplyCallback)[m[K’:
+[01m[K/home/mpais/ns-allinone-3.43/ns-3.43/src/mesh/model/dot11s/hwmp-protocol.cc:727:39:[m[K [01;35m[Kwarning: [m[Kvariable ‘[01m[Ksrc48[m[K’ set but not used [[01;35m[K-Wunused-but-set-variable[m[K]
+  727 |                 volatile Mac48Address [01;35m[Ksrc48[m[K = source;
+      |                                       [01;35m[K^~~~~[m[K
+[01m[K/home/mpais/ns-allinone-3.43/ns-3.43/src/mesh/model/dot11s/hwmp-protocol.cc:[m[K In member function ‘[01m[Kvoid ns3::dot11s::HwmpProtocol::[01;32m[KOnMacTx[m[K(ns3::Ptr<const ns3::Packet>, ns3::Mac48Address, uint32_t, ns3::Mac48Address)[m[K’:
+[01m[K/home/mpais/ns-allinone-3.43/ns-3.43/src/mesh/model/dot11s/hwmp-protocol.cc:1267:10:[m[K [01;35m[Kwarning: [m[Kvariable ‘[01m[Kit[m[K’ set but not used [[01;35m[K-Wunused-but-set-variable[m[K]
+ 1267 |     auto [01;35m[Kit[m[K = std::make_tuple(nextHop, group, GetAddress());
+      |          [01;35m[K^~[m[K
+[01m[K/home/mpais/ns-allinone-3.43/ns-3.43/scratch/mesh.cc:[m[K In function ‘[01m[Kvoid[01;32m[K ReceivePacket[m[K(ns3::Ptr<ns3::Socket>)[m[K’:
+[01m[K/home/mpais/ns-allinone-3.43/ns-3.43/scratch/mesh.cc:154:14:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[KnodeId[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  154 |     uint32_t [01;35m[KnodeId[m[K = node->GetId();    // Get the node ID
+      |              [01;35m[K^~~~~~[m[K
+HwmpProtocol:HwmpProtocol(0x5771ed3e5e20)
+HwmpProtocol:Install(0x5771ed3e5e20, 0x5771ed326d10)
+HwmpProtocolMac:HwmpProtocolMac(0x5771ed45e8a0, 1, 0x5771ed3e5e20)
+HwmpProtocolMac:SetParent(0x5771ed45e8a0, 0x5771ed2dee10)
+HwmpProtocol:HwmpProtocol(0x5771ed3e6640)
+HwmpProtocol:Install(0x5771ed3e6640, 0x5771ed471cd0)
+HwmpProtocolMac:HwmpProtocolMac(0x5771ed457da0, 1, 0x5771ed3e6640)
+HwmpProtocolMac:SetParent(0x5771ed457da0, 0x5771ed4904d0)
+HwmpProtocol:HwmpProtocol(0x5771ed4a0160)
+HwmpProtocol:Install(0x5771ed4a0160, 0x5771ed323970)
+HwmpProtocolMac:HwmpProtocolMac(0x5771ed48cc20, 1, 0x5771ed4a0160)
+HwmpProtocolMac:SetParent(0x5771ed48cc20, 0x5771ed49a4f0)
+HwmpProtocol:HwmpProtocol(0x5771ed4aa5b0)
+HwmpProtocol:Install(0x5771ed4aa5b0, 0x5771ed48d310)
+HwmpProtocolMac:HwmpProtocolMac(0x5771ed496a40, 1, 0x5771ed4aa5b0)
+HwmpProtocolMac:SetParent(0x5771ed496a40, 0x5771ed4a4940)
+HwmpProtocol:HwmpProtocol(0x5771ed4b49f0)
+HwmpProtocol:Install(0x5771ed4b49f0, 0x5771ed497130)
+HwmpProtocolMac:HwmpProtocolMac(0x5771ed4a0ea0, 1, 0x5771ed4b49f0)
+HwmpProtocolMac:SetParent(0x5771ed4a0ea0, 0x5771ed4aed30)
+HwmpProtocol:HwmpProtocol(0x5771ed4bee30)
+HwmpProtocol:Install(0x5771ed4bee30, 0x5771ed4a1590)
+HwmpProtocolMac:HwmpProtocolMac(0x5771ed4ab2c0, 1, 0x5771ed4bee30)
+HwmpProtocolMac:SetParent(0x5771ed4ab2c0, 0x5771ed4b91c0)
+HwmpProtocol:AssignStreams(0x5771ed3e5e20, 4)
+HwmpProtocol:AssignStreams(0x5771ed3e6640, 14)
+HwmpProtocol:AssignStreams(0x5771ed4a0160, 24)
+HwmpProtocol:AssignStreams(0x5771ed4aa5b0, 34)
+HwmpProtocol:AssignStreams(0x5771ed4b49f0, 44)
+HwmpProtocol:AssignStreams(0x5771ed4bee30, 54)
+HwmpProtocol:StartLinkMonitor("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+HwmpProtocol:StartLinkMonitor("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+HwmpProtocol:StartLinkMonitor("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+HwmpProtocol:StartLinkMonitor("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+HwmpProtocol:StartLinkMonitor("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+
+Requesting route for packet from level 3
+ENTROUUUU
+CURRENT NODE: 00:00:00:00:00:01
+Last active peer addresses:
+Address: 00:00:00:00:00:02
+Address: 00:00:00:00:00:04
+END LAST ACTIVE PEER ADDRESSES
+[HWMP] Node 00:00:00:00:00:01 EWMA avgTTL=32, σ=0
+[HWMP] Node 00:00:00:00:00:01 updated node-level average TTL = 32 (sum=0, count=1)
+[HWMP Per-Sender Metrics] Node 00:00:00:00:00:01Sender=00:00:00:00:00:01 TTL=32 EWMA TTL=32 EWMA Var=0 Count=1
+ORIGINAL TTL: 32
+[HWMP] Packet originated from self; ignoring first TTL storage.
+FIRST TTL: 0
+[HWMP Multicast Metrics] Node 00:00:00:00:00:01 recebeu multicast de 00:00:00:00:00:01 com TTL=32 (estimated hop count = 0)
+[HWMP Multicast Metrics] Node 00:00:00:00:00:01 recv TTL=32 vs avgTTL=32 (σ=0) → MESMO NÍVEL
+HwmpProtocol:GetBroadcastReceivers(0x5771ed3e5e20, 1)
+Sending route reply for broadcast; address ff:ff:ff:ff:ff:ff
+AQUIIIIIIIIIIIIIIII
+Forwarding multicast packet from node 00:00:00:00:00:01 to receiver ff:ff:ff:ff:ff:ff
+HwmpProtocolMac:UpdateOutcomingFrame(0x5771ed45e8a0, 0x5771ed4bf1b0, QOSDATA , 00:00:00:00:00:01, 01:00:5e:01:02:05)
+ACABOUUUUUUUUUUUUUU
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed5075c0, QOSDATA )
+HwmpProtocolMac:ReceiveData(0x5771ed457da0, 0x5771ed5075c0, QOSDATA )
+HwmpProtocol:DropDataFrame(0x5771ed3e6640, 1, 00:00:00:00:00:01)
+HwmpProtocolMac::ReceiveData: Received data frame from 00:00:00:00:00:01 to 01:00:5e:01:02:05 current node 00:00:00:00:00:02
+HwmpProtocol:OnMacTx(0x5771ed3e6640, 0x5771ed5075c0, 00:00:00:00:00:01, 1)
+OnMacTx: NextHop00:00:00:00:00:01, group=01:00:5e:01:02:05
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed5075c0, QOSDATA )
+HwmpProtocolMac:ReceiveData(0x5771ed496a40, 0x5771ed5075c0, QOSDATA )
+HwmpProtocol:DropDataFrame(0x5771ed4aa5b0, 1, 00:00:00:00:00:01)
+HwmpProtocolMac::ReceiveData: Received data frame from 00:00:00:00:00:01 to 01:00:5e:01:02:05 current node 00:00:00:00:00:04
+HwmpProtocol:OnMacTx(0x5771ed4aa5b0, 0x5771ed5075c0, 00:00:00:00:00:01, 1)
+OnMacTx: NextHop00:00:00:00:00:01, group=01:00:5e:01:02:05
+HwmpProtocol:RequestRoute(0x5771ed3e6640, 1, 00:00:00:00:00:01, 01:00:5e:01:02:05, 0x5771ed504910, 2048)
+Requesting route for packet from level 2
+ENTROUUUU
+CURRENT NODE: 00:00:00:00:00:02
+Last active peer addresses:
+Address: 00:00:00:00:00:01
+Address: 00:00:00:00:00:03
+Address: 00:00:00:00:00:05
+END LAST ACTIVE PEER ADDRESSES
+[HWMP] Node 00:00:00:00:00:02 EWMA avgTTL=31, σ=0
+[HWMP] Node 00:00:00:00:00:02 updated node-level average TTL = 31 (sum=0, count=1)
+[HWMP Per-Sender Metrics] Node 00:00:00:00:00:02Sender=00:00:00:00:00:01 TTL=31 EWMA TTL=31 EWMA Var=0 Count=1
+ORIGINAL TTL: 32
+[HWMP] Node 00:00:00:00:00:02 received its FIRST packet from 00:00:00:00:00:01 with TTL = 31
+FIRST TTL: 31
+[HWMP Multicast Metrics] Node 00:00:00:00:00:02 recebeu multicast de 00:00:00:00:00:01 com TTL=31 (estimated hop count = 1)
+[HWMP Multicast Metrics] Node 00:00:00:00:00:02 recv TTL=31 vs avgTTL=31 (σ=0) → MESMO NÍVEL
+HwmpProtocol:GetBroadcastReceivers(0x5771ed3e6640, 1)
+Sending route reply for broadcast; address ff:ff:ff:ff:ff:ff
+AQUIIIIIIIIIIIIIIII
+Forwarding multicast packet from node 00:00:00:00:00:02 to receiver ff:ff:ff:ff:ff:ff
+HwmpProtocolMac:UpdateOutcomingFrame(0x5771ed457da0, 0x5771ed4fb290, QOSDATA , 00:00:00:00:00:01, 01:00:5e:01:02:05)
+ACABOUUUUUUUUUUUUUU
+HwmpProtocol:RequestRoute(0x5771ed4aa5b0, 1, 00:00:00:00:00:01, 01:00:5e:01:02:05, 0x5771ed500f40, 2048)
+Requesting route for packet from level 2
+ENTROUUUU
+CURRENT NODE: 00:00:00:00:00:04
+Last active peer addresses:
+Address: 00:00:00:00:00:01
+Address: 00:00:00:00:00:05
+END LAST ACTIVE PEER ADDRESSES
+[HWMP] Node 00:00:00:00:00:04 EWMA avgTTL=31, σ=0
+[HWMP] Node 00:00:00:00:00:04 updated node-level average TTL = 31 (sum=0, count=1)
+[HWMP Per-Sender Metrics] Node 00:00:00:00:00:04Sender=00:00:00:00:00:01 TTL=31 EWMA TTL=31 EWMA Var=0 Count=1
+ORIGINAL TTL: 32
+[HWMP] Node 00:00:00:00:00:04 received its FIRST packet from 00:00:00:00:00:01 with TTL = 31
+FIRST TTL: 31
+[HWMP Multicast Metrics] Node 00:00:00:00:00:04 recebeu multicast de 00:00:00:00:00:01 com TTL=31 (estimated hop count = 1)
+[HWMP Multicast Metrics] Node 00:00:00:00:00:04 recv TTL=31 vs avgTTL=31 (σ=0) → MESMO NÍVEL
+HwmpProtocol:GetBroadcastReceivers(0x5771ed4aa5b0, 1)
+Sending route reply for broadcast; address ff:ff:ff:ff:ff:ff
+AQUIIIIIIIIIIIIIIII
+Forwarding multicast packet from node 00:00:00:00:00:04 to receiver ff:ff:ff:ff:ff:ff
+HwmpProtocolMac:UpdateOutcomingFrame(0x5771ed496a40, 0x5771ed4fcee0, QOSDATA , 00:00:00:00:00:01, 01:00:5e:01:02:05)
+ACABOUUUUUUUUUUUUUU
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed508b90, QOSDATA )
+HwmpProtocolMac:ReceiveData(0x5771ed48cc20, 0x5771ed508b90, QOSDATA )
+HwmpProtocol:DropDataFrame(0x5771ed4a0160, 1, 00:00:00:00:00:01)
+HwmpProtocolMac::ReceiveData: Received data frame from 00:00:00:00:00:01 to 01:00:5e:01:02:05 current node 00:00:00:00:00:03
+HwmpProtocol:OnMacTx(0x5771ed4a0160, 0x5771ed508b90, 00:00:00:00:00:01, 1)
+OnMacTx: NextHop00:00:00:00:00:01, group=01:00:5e:01:02:05
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed508b90, QOSDATA )
+HwmpProtocolMac:ReceiveData(0x5771ed4a0ea0, 0x5771ed508b90, QOSDATA )
+HwmpProtocol:DropDataFrame(0x5771ed4b49f0, 1, 00:00:00:00:00:01)
+HwmpProtocolMac::ReceiveData: Received data frame from 00:00:00:00:00:01 to 01:00:5e:01:02:05 current node 00:00:00:00:00:05
+HwmpProtocol:OnMacTx(0x5771ed4b49f0, 0x5771ed508b90, 00:00:00:00:00:01, 1)
+OnMacTx: NextHop00:00:00:00:00:01, group=01:00:5e:01:02:05
+HwmpProtocol:RequestRoute(0x5771ed4b49f0, 1, 00:00:00:00:00:01, 01:00:5e:01:02:05, 0x5771ed4fd730, 2048)
+Requesting route for packet from level 2
+ENTROUUUU
+CURRENT NODE: 00:00:00:00:00:05
+Last active peer addresses:
+Address: 00:00:00:00:00:02
+Address: 00:00:00:00:00:04
+Address: 00:00:00:00:00:06
+END LAST ACTIVE PEER ADDRESSES
+[HWMP] Node 00:00:00:00:00:05 EWMA avgTTL=30, σ=0
+[HWMP] Node 00:00:00:00:00:05 updated node-level average TTL = 30 (sum=0, count=1)
+[HWMP Per-Sender Metrics] Node 00:00:00:00:00:05Sender=00:00:00:00:00:01 TTL=30 EWMA TTL=30 EWMA Var=0 Count=1
+ORIGINAL TTL: 32
+[HWMP] Node 00:00:00:00:00:05 received its FIRST packet from 00:00:00:00:00:01 with TTL = 30
+FIRST TTL: 30
+[HWMP Multicast Metrics] Node 00:00:00:00:00:05 recebeu multicast de 00:00:00:00:00:01 com TTL=30 (estimated hop count = 2)
+[HWMP Multicast Metrics] Node 00:00:00:00:00:05 recv TTL=30 vs avgTTL=30 (σ=0) → MESMO NÍVEL
+HwmpProtocol:GetBroadcastReceivers(0x5771ed4b49f0, 1)
+Sending route reply for broadcast; address ff:ff:ff:ff:ff:ff
+AQUIIIIIIIIIIIIIIII
+Forwarding multicast packet from node 00:00:00:00:00:05 to receiver ff:ff:ff:ff:ff:ff
+HwmpProtocolMac:UpdateOutcomingFrame(0x5771ed4a0ea0, 0x5771ed4ffc10, QOSDATA , 00:00:00:00:00:01, 01:00:5e:01:02:05)
+ACABOUUUUUUUUUUUUUU
+HwmpProtocol:RequestRoute(0x5771ed4a0160, 1, 00:00:00:00:00:01, 01:00:5e:01:02:05, 0x5771ed502fd0, 2048)
+Requesting route for packet from level 2
+ENTROUUUU
+CURRENT NODE: 00:00:00:00:00:03
+Last active peer addresses:
+Address: 00:00:00:00:00:02
+Address: 00:00:00:00:00:06
+END LAST ACTIVE PEER ADDRESSES
+[HWMP] Node 00:00:00:00:00:03 EWMA avgTTL=30, σ=0
+[HWMP] Node 00:00:00:00:00:03 updated node-level average TTL = 30 (sum=0, count=1)
+[HWMP Per-Sender Metrics] Node 00:00:00:00:00:03Sender=00:00:00:00:00:01 TTL=30 EWMA TTL=30 EWMA Var=0 Count=1
+ORIGINAL TTL: 32
+[HWMP] Node 00:00:00:00:00:03 received its FIRST packet from 00:00:00:00:00:01 with TTL = 30
+FIRST TTL: 30
+[HWMP Multicast Metrics] Node 00:00:00:00:00:03 recebeu multicast de 00:00:00:00:00:01 com TTL=30 (estimated hop count = 2)
+[HWMP Multicast Metrics] Node 00:00:00:00:00:03 recv TTL=30 vs avgTTL=30 (σ=0) → MESMO NÍVEL
+HwmpProtocol:GetBroadcastReceivers(0x5771ed4a0160, 1)
+Sending route reply for broadcast; address ff:ff:ff:ff:ff:ff
+AQUIIIIIIIIIIIIIIII
+Forwarding multicast packet from node 00:00:00:00:00:03 to receiver ff:ff:ff:ff:ff:ff
+HwmpProtocolMac:UpdateOutcomingFrame(0x5771ed48cc20, 0x5771ed4fd730, QOSDATA , 00:00:00:00:00:01, 01:00:5e:01:02:05)
+ACABOUUUUUUUUUUUUUU
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4fcdf0, QOSDATA )
+HwmpProtocolMac:ReceiveData(0x5771ed496a40, 0x5771ed4fcdf0, QOSDATA )
+HwmpProtocol:DropDataFrame(0x5771ed4aa5b0, 1, 00:00:00:00:00:01)
+Dropping frame; source 00:00:00:00:00:01 dest 01:00:5e:01:02:05 seqno 1
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed504b40, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=6)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed504b40, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=6)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed502fd0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=14)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed502fd0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=14)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed502fd0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=14)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed502f60, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=11)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed502f60, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=11)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed50bb80, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=11)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed50bb80, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=11)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed50bb80, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=14)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed50bb80, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=14)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed50bb80, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=14)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed503990, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=7)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed503990, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=7)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4fd730, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=7)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fd730, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=7)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4fd730, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=15)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4fd730, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=15)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fd730, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=15)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4fc560, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=12)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4fc560, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=12)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4fc560, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=12)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4fc560, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=12)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed507220, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=15)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed507220, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=15)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed507220, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=15)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed49ec90, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=8)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed49ec90, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=8)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4fb430, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=8)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fb430, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=8)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4fb430, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=16)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4fb430, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=16)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fb430, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=16)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4fcdf0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=13)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4fcdf0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=13)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed504b40, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=13)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed504b40, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=13)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4f9de0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=16)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4f9de0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=16)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4f9de0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=16)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed501020, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=9)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed501020, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=9)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4f9640, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=9)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4f9640, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=9)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4fdb40, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=17)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4fdb40, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=17)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fdb40, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=17)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4fc2f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=14)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4fc2f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=14)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4fc2f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=14)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4fc2f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=14)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4be600, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=17)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4be600, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=17)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4be600, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=17)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed502fd0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=10)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed502fd0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=10)
+HwmpProtocol:RequestRoute(0x5771ed3e5e20, 0, 00:00:00:00:00:01, 01:00:5e:01:02:05, 0x5771ed4fa8f0, 2048)
+Requesting route for packet from level 3
+ENTROUUUU
+CURRENT NODE: 00:00:00:00:00:01
+Last active peer addresses:
+Address: 00:00:00:00:00:02
+Address: 00:00:00:00:00:04
+END LAST ACTIVE PEER ADDRESSES
+[HWMP] Node 00:00:00:00:00:01 EWMA avgTTL=32, σ=0
+[HWMP] Node 00:00:00:00:00:01 updated node-level average TTL = 32 (sum=0, count=2)
+[HWMP Per-Sender Metrics] Node 00:00:00:00:00:01Sender=00:00:00:00:00:01 TTL=32 EWMA TTL=32 EWMA Var=0 Count=2
+ORIGINAL TTL: 32
+[HWMP] Packet originated from self; ignoring first TTL storage.
+FIRST TTL: 0
+[HWMP Multicast Metrics] Node 00:00:00:00:00:01 recebeu multicast de 00:00:00:00:00:01 com TTL=32 (estimated hop count = 0)
+[HWMP Multicast Metrics] Node 00:00:00:00:00:01 recv TTL=32 vs avgTTL=32 (σ=0) → MESMO NÍVEL
+HwmpProtocol:GetBroadcastReceivers(0x5771ed3e5e20, 1)
+Sending route reply for broadcast; address ff:ff:ff:ff:ff:ff
+AQUIIIIIIIIIIIIIIII
+Forwarding multicast packet from node 00:00:00:00:00:01 to receiver ff:ff:ff:ff:ff:ff
+HwmpProtocolMac:UpdateOutcomingFrame(0x5771ed45e8a0, 0x5771ed4fe190, QOSDATA , 00:00:00:00:00:01, 01:00:5e:01:02:05)
+ACABOUUUUUUUUUUUUUU
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed502fd0, QOSDATA )
+HwmpProtocolMac:ReceiveData(0x5771ed457da0, 0x5771ed502fd0, QOSDATA )
+HwmpProtocol:DropDataFrame(0x5771ed3e6640, 2, 00:00:00:00:00:01)
+HwmpProtocolMac::ReceiveData: Received data frame from 00:00:00:00:00:01 to 01:00:5e:01:02:05 current node 00:00:00:00:00:02
+HwmpProtocol:OnMacTx(0x5771ed3e6640, 0x5771ed502fd0, 00:00:00:00:00:01, 1)
+OnMacTx: NextHop00:00:00:00:00:01, group=01:00:5e:01:02:05
+HwmpProtocol:SendPrune(0x5771ed3e6640, (00:00:00:00:00:02,1), 00:00:00:00:00:01, 1, 1)
+I am 00:00:00:00:00:02
+HwmpProtocolMac:SendPrune(0x5771ed457da0, 00:00:00:00:00:01)
+HwmpProtocolMac::SendPrune: receiver = 00:00:00:00:00:01
+HwmpProtocolMac::SendPrune: addr2 = 00:00:00:00:00:02
+HwmpProtocolMac::SendPrune: addr3 = 01:00:5e:01:02:05
+HwmpProtocolMac:UpdateOutcomingFrame(0x5771ed457da0, 0x5771ed50bb30, MGT_ACTION ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=00:00:00:00:00:01, SA=00:00:00:00:00:02, BSSID=01:00:5e:01:02:05, FragNumber=0, SeqNumber=0, 00:00:00:00:00:00, 00:00:00:00:00:00)
+Auto-pruning 00:00:00:00:00:01 for flow Node0→01:00:5e:01:02:05
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed502fd0, QOSDATA )
+HwmpProtocolMac:ReceiveData(0x5771ed496a40, 0x5771ed502fd0, QOSDATA )
+HwmpProtocol:DropDataFrame(0x5771ed4aa5b0, 2, 00:00:00:00:00:01)
+HwmpProtocolMac::ReceiveData: Received data frame from 00:00:00:00:00:01 to 01:00:5e:01:02:05 current node 00:00:00:00:00:04
+HwmpProtocol:OnMacTx(0x5771ed4aa5b0, 0x5771ed502fd0, 00:00:00:00:00:01, 1)
+OnMacTx: NextHop00:00:00:00:00:01, group=01:00:5e:01:02:05
+HwmpProtocol:SendPrune(0x5771ed4aa5b0, (00:00:00:00:00:04,1), 00:00:00:00:00:01, 1, 1)
+I am 00:00:00:00:00:04
+HwmpProtocolMac:SendPrune(0x5771ed496a40, 00:00:00:00:00:01)
+HwmpProtocolMac::SendPrune: receiver = 00:00:00:00:00:01
+HwmpProtocolMac::SendPrune: addr2 = 00:00:00:00:00:04
+HwmpProtocolMac::SendPrune: addr3 = 01:00:5e:01:02:05
+HwmpProtocolMac:UpdateOutcomingFrame(0x5771ed496a40, 0x5771ed49ec90, MGT_ACTION ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=00:00:00:00:00:01, SA=00:00:00:00:00:04, BSSID=01:00:5e:01:02:05, FragNumber=0, SeqNumber=0, 00:00:00:00:00:00, 00:00:00:00:00:00)
+Auto-pruning 00:00:00:00:00:01 for flow Node0→01:00:5e:01:02:05
+HwmpProtocol:RequestRoute(0x5771ed3e6640, 1, 00:00:00:00:00:01, 01:00:5e:01:02:05, 0x5771ed4fa8f0, 2048)
+Requesting route for packet from level 2
+ENTROUUUU
+CURRENT NODE: 00:00:00:00:00:02
+Last active peer addresses:
+Address: 00:00:00:00:00:01
+Address: 00:00:00:00:00:03
+Address: 00:00:00:00:00:05
+END LAST ACTIVE PEER ADDRESSES
+[HWMP] Node 00:00:00:00:00:02 EWMA avgTTL=31, σ=0
+[HWMP] Node 00:00:00:00:00:02 updated node-level average TTL = 31 (sum=0, count=2)
+[HWMP Per-Sender Metrics] Node 00:00:00:00:00:02Sender=00:00:00:00:00:01 TTL=31 EWMA TTL=31 EWMA Var=0 Count=2
+ORIGINAL TTL: 32
+FIRST TTL: 31
+[HWMP Multicast Metrics] Node 00:00:00:00:00:02 recebeu multicast de 00:00:00:00:00:01 com TTL=31 (estimated hop count = 1)
+[HWMP Multicast Metrics] Node 00:00:00:00:00:02 recv TTL=31 vs avgTTL=31 (σ=0) → MESMO NÍVEL
+HwmpProtocol:GetBroadcastReceivers(0x5771ed3e6640, 1)
+Sending route reply for broadcast; address ff:ff:ff:ff:ff:ff
+AQUIIIIIIIIIIIIIIII
+Forwarding multicast packet from node 00:00:00:00:00:02 to receiver ff:ff:ff:ff:ff:ff
+HwmpProtocolMac:UpdateOutcomingFrame(0x5771ed457da0, 0x5771ed50a900, QOSDATA , 00:00:00:00:00:01, 01:00:5e:01:02:05)
+ACABOUUUUUUUUUUUUUU
+HwmpProtocol:RequestRoute(0x5771ed4aa5b0, 1, 00:00:00:00:00:01, 01:00:5e:01:02:05, 0x5771ed4be600, 2048)
+Requesting route for packet from level 2
+ENTROUUUU
+CURRENT NODE: 00:00:00:00:00:04
+Last active peer addresses:
+Address: 00:00:00:00:00:01
+Address: 00:00:00:00:00:05
+END LAST ACTIVE PEER ADDRESSES
+[HWMP] Node 00:00:00:00:00:04 EWMA avgTTL=31, σ=0
+[HWMP] Node 00:00:00:00:00:04 updated node-level average TTL = 31 (sum=0, count=2)
+[HWMP Per-Sender Metrics] Node 00:00:00:00:00:04Sender=00:00:00:00:00:01 TTL=31 EWMA TTL=31 EWMA Var=0 Count=2
+ORIGINAL TTL: 32
+FIRST TTL: 31
+[HWMP Multicast Metrics] Node 00:00:00:00:00:04 recebeu multicast de 00:00:00:00:00:01 com TTL=31 (estimated hop count = 1)
+[HWMP Multicast Metrics] Node 00:00:00:00:00:04 recv TTL=31 vs avgTTL=31 (σ=0) → MESMO NÍVEL
+HwmpProtocol:GetBroadcastReceivers(0x5771ed4aa5b0, 1)
+Sending route reply for broadcast; address ff:ff:ff:ff:ff:ff
+AQUIIIIIIIIIIIIIIII
+Forwarding multicast packet from node 00:00:00:00:00:04 to receiver ff:ff:ff:ff:ff:ff
+HwmpProtocolMac:UpdateOutcomingFrame(0x5771ed496a40, 0x5771ed503df0, QOSDATA , 00:00:00:00:00:01, 01:00:5e:01:02:05)
+ACABOUUUUUUUUUUUUUU
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed503990, MGT_ACTION ToDS=0, FromDS=0, MoreFrag=0, Retry=1, PowerManagement=0, MoreData=0 Duration/ID=2000us, DA=00:00:00:00:00:01, SA=00:00:00:00:00:04, BSSID=01:00:5e:01:02:05, FragNumber=0, SeqNumber=11)
+HwmpProtocolMac:ReceiveAction(0x5771ed45e8a0, 0x5771ed503990, MGT_ACTION ToDS=0, FromDS=0, MoreFrag=0, Retry=1, PowerManagement=0, MoreData=0 Duration/ID=2000us, DA=00:00:00:00:00:01, SA=00:00:00:00:00:04, BSSID=01:00:5e:01:02:05, FragNumber=0, SeqNumber=11)
+HwmpProtocol:ReceivePrune(0x5771ed3e5e20, 00:00:00:00:00:04, 1, 01:00:5e:01:02:05)
+I am 00:00:00:00:00:01, received PRUNE from 00:00:00:00:00:04
+Received PRUNE for destination 00:00:00:00:00:04 with reason 1
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed508b90, QOSDATA )
+HwmpProtocolMac:ReceiveData(0x5771ed48cc20, 0x5771ed508b90, QOSDATA )
+HwmpProtocol:DropDataFrame(0x5771ed4a0160, 2, 00:00:00:00:00:01)
+HwmpProtocolMac::ReceiveData: Received data frame from 00:00:00:00:00:01 to 01:00:5e:01:02:05 current node 00:00:00:00:00:03
+HwmpProtocol:OnMacTx(0x5771ed4a0160, 0x5771ed508b90, 00:00:00:00:00:01, 1)
+OnMacTx: NextHop00:00:00:00:00:01, group=01:00:5e:01:02:05
+HwmpProtocol:SendPrune(0x5771ed4a0160, (00:00:00:00:00:03,1), 00:00:00:00:00:01, 1, 1)
+I am 00:00:00:00:00:03
+HwmpProtocolMac:SendPrune(0x5771ed48cc20, 00:00:00:00:00:01)
+HwmpProtocolMac::SendPrune: receiver = 00:00:00:00:00:01
+HwmpProtocolMac::SendPrune: addr2 = 00:00:00:00:00:03
+HwmpProtocolMac::SendPrune: addr3 = 01:00:5e:01:02:05
+HwmpProtocolMac:UpdateOutcomingFrame(0x5771ed48cc20, 0x5771ed509460, MGT_ACTION ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=00:00:00:00:00:01, SA=00:00:00:00:00:03, BSSID=01:00:5e:01:02:05, FragNumber=0, SeqNumber=0, 00:00:00:00:00:00, 00:00:00:00:00:00)
+Auto-pruning 00:00:00:00:00:01 for flow Node0→01:00:5e:01:02:05
+HwmpProtocol:RequestRoute(0x5771ed4a0160, 1, 00:00:00:00:00:01, 01:00:5e:01:02:05, 0x5771ed509460, 2048)
+Requesting route for packet from level 2
+ENTROUUUU
+CURRENT NODE: 00:00:00:00:00:03
+Last active peer addresses:
+Address: 00:00:00:00:00:02
+Address: 00:00:00:00:00:06
+END LAST ACTIVE PEER ADDRESSES
+[HWMP] Node 00:00:00:00:00:03 EWMA avgTTL=30, σ=0
+[HWMP] Node 00:00:00:00:00:03 updated node-level average TTL = 30 (sum=0, count=2)
+[HWMP Per-Sender Metrics] Node 00:00:00:00:00:03Sender=00:00:00:00:00:01 TTL=30 EWMA TTL=30 EWMA Var=0 Count=2
+ORIGINAL TTL: 32
+FIRST TTL: 30
+[HWMP Multicast Metrics] Node 00:00:00:00:00:03 recebeu multicast de 00:00:00:00:00:01 com TTL=30 (estimated hop count = 2)
+[HWMP Multicast Metrics] Node 00:00:00:00:00:03 recv TTL=30 vs avgTTL=30 (σ=0) → MESMO NÍVEL
+HwmpProtocol:GetBroadcastReceivers(0x5771ed4a0160, 1)
+Sending route reply for broadcast; address ff:ff:ff:ff:ff:ff
+AQUIIIIIIIIIIIIIIII
+Forwarding multicast packet from node 00:00:00:00:00:03 to receiver ff:ff:ff:ff:ff:ff
+HwmpProtocolMac:UpdateOutcomingFrame(0x5771ed48cc20, 0x5771ed50a970, QOSDATA , 00:00:00:00:00:01, 01:00:5e:01:02:05)
+ACABOUUUUUUUUUUUUUU
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed509540, MGT_ACTION ToDS=0, FromDS=0, MoreFrag=0, Retry=1, PowerManagement=0, MoreData=0 Duration/ID=2000us, DA=00:00:00:00:00:01, SA=00:00:00:00:00:02, BSSID=01:00:5e:01:02:05, FragNumber=0, SeqNumber=18)
+HwmpProtocolMac:ReceiveAction(0x5771ed45e8a0, 0x5771ed509540, MGT_ACTION ToDS=0, FromDS=0, MoreFrag=0, Retry=1, PowerManagement=0, MoreData=0 Duration/ID=2000us, DA=00:00:00:00:00:01, SA=00:00:00:00:00:02, BSSID=01:00:5e:01:02:05, FragNumber=0, SeqNumber=18)
+HwmpProtocol:ReceivePrune(0x5771ed3e5e20, 00:00:00:00:00:02, 1, 01:00:5e:01:02:05)
+I am 00:00:00:00:00:01, received PRUNE from 00:00:00:00:00:02
+Received PRUNE for destination 00:00:00:00:00:02 with reason 1
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4fe290, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=10)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fe290, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=10)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4fdb40, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=20)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4fdb40, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=20)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fdb40, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=20)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed503360, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=16)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed503360, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=16)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed502fd0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=16)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed502fd0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=16)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed509460, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=18)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed509460, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=18)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed509460, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=18)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4fe190, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=13)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fe190, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=13)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed50afa0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=11)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed50afa0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=11)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed50afa0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=21)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed50afa0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=21)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed50afa0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=21)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4fc2f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=17)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4fc2f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=17)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed501350, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=17)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed501350, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=17)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed501350, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=19)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed501350, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=19)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed501350, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=19)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed502120, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=14)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed502120, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=14)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed502120, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=12)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed502120, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=12)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed502120, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=22)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed502120, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=22)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed502120, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=22)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed5035f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=18)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed5035f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=18)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed509460, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=18)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed509460, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=18)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed50a240, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=20)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed50a240, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=20)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed50a240, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=20)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed50a970, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=15)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed50a970, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=15)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed502fd0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=13)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed502fd0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=13)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4fa8f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=23)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4fa8f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=23)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fa8f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=23)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed50cb30, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=19)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed50cb30, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=19)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed50b820, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=19)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed50b820, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=19)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4a9450, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=21)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4a9450, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=21)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4a9450, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=21)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4fec70, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=16)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fec70, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=16)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4fec70, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=14)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fec70, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=14)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4fec70, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=24)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4fec70, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=24)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fec70, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=24)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed48fd20, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=20)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed48fd20, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=20)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed503360, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=20)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed503360, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=20)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4ff060, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=22)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4ff060, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=22)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4ff060, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=22)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed50d050, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=17)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed50d050, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=17)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4fd580, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=15)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fd580, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=15)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed500980, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=25)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed500980, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=25)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed500980, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=25)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4fd6c0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=21)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4fd6c0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=21)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4f9cf0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=21)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4f9cf0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=21)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4d1de0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=23)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4d1de0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=23)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4d1de0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=23)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4798b0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=18)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4798b0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=18)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed50c250, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=16)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed50c250, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=16)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4b39c0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=26)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4b39c0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=26)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4b39c0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=26)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed345970, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=22)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed345970, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=22)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed500980, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=22)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed500980, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=22)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4ae350, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=24)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4ae350, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=24)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4ae350, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=24)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4fbee0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=19)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fbee0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=19)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed502c70, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=17)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed502c70, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=17)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4fcfa0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=27)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4fcfa0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=27)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fcfa0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=27)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed5071b0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=23)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed5071b0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=23)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4f9cf0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=23)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4f9cf0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=23)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4798b0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=25)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4798b0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=25)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4798b0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=25)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed39c860, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=20)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed39c860, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=20)
+HwmpProtocol:DoLinkCheck("BBBBBBBBBBBBBBBBBBBBBBBBBB")
+[7s] Link UP to 00:00:00:00:00:02
+[7s] Link UP to 00:00:00:00:00:04
+HwmpProtocol:DoLinkCheck("BBBBBBBBBBBBBBBBBBBBBBBBBB")
+[7s] Link UP to 00:00:00:00:00:01
+[7s] Link UP to 00:00:00:00:00:03
+[7s] Link UP to 00:00:00:00:00:05
+HwmpProtocol:DoLinkCheck("BBBBBBBBBBBBBBBBBBBBBBBBBB")
+[7s] Link UP to 00:00:00:00:00:02
+[7s] Link UP to 00:00:00:00:00:06
+HwmpProtocol:DoLinkCheck("BBBBBBBBBBBBBBBBBBBBBBBBBB")
+[7s] Link UP to 00:00:00:00:00:01
+[7s] Link UP to 00:00:00:00:00:05
+HwmpProtocol:DoLinkCheck("BBBBBBBBBBBBBBBBBBBBBBBBBB")
+[7s] Link UP to 00:00:00:00:00:02
+[7s] Link UP to 00:00:00:00:00:04
+[7s] Link UP to 00:00:00:00:00:06
+HwmpProtocol:DoLinkCheck("BBBBBBBBBBBBBBBBBBBBBBBBBB")
+[7s] Link UP to 00:00:00:00:00:03
+[7s] Link UP to 00:00:00:00:00:05
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed507010, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=18)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed507010, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=18)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4feff0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=28)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4feff0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=28)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4feff0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=28)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed5016d0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=24)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed5016d0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=24)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed33ce10, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=24)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed33ce10, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=24)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed3a0590, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=26)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed3a0590, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=26)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed3a0590, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=26)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4ae180, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=21)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4ae180, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=21)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4faf50, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=19)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4faf50, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=19)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed36b200, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=29)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed36b200, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=29)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed36b200, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=29)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed3a0590, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=25)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed3a0590, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=25)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed50a680, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=25)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed50a680, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=25)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed36b200, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=27)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed36b200, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=27)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed36b200, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=27)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4f9cf0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=22)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4f9cf0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=22)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed507010, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=20)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed507010, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=20)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed36b200, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=30)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed36b200, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=30)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed36b200, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=30)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4feb50, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=26)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4feb50, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=26)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed348b60, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=26)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed348b60, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=26)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed3466c0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=28)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed3466c0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=28)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed3466c0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=28)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4feb50, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=23)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4feb50, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=23)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed50cd70, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=21)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed50cd70, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=21)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4f9ec0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=31)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4f9ec0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=31)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4f9ec0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=31)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed502fd0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=27)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed502fd0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=27)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed3a0590, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=27)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed3a0590, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=27)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed39c860, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=29)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed39c860, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=29)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed39c860, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=29)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4798b0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=24)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4798b0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=24)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed50cde0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=22)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed50cde0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=22)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed50cac0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=32)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed50cac0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=32)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed50cac0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=32)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed5049e0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=28)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed5049e0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=28)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed5049e0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=28)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed5049e0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=28)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed50cd70, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=30)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed50cd70, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=30)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed50cd70, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=30)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed502fd0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=25)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed502fd0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=25)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4a9580, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=23)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4a9580, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=23)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed503b00, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=33)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed503b00, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=33)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed503b00, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=33)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed3ba240, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=29)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed3ba240, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=29)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed5046f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=29)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed5046f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=29)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed35c9f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=31)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed35c9f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=31)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed35c9f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=31)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed39c860, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=26)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed39c860, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=26)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4a4010, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=24)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4a4010, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=24)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed50afa0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=34)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed50afa0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=34)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed50afa0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=34)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed484550, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=30)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed484550, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=30)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4fbee0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=30)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4fbee0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=30)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed3ba240, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=32)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed3ba240, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=32)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed3ba240, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=32)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed503b00, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=27)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed503b00, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=27)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed2fca90, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=25)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed2fca90, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=25)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4ffa40, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=35)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4ffa40, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=35)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4ffa40, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=35)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed50a680, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=31)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed50a680, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=31)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed3a0590, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=31)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed3a0590, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=31)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4a4010, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=33)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4a4010, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=33)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4a4010, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=33)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed345970, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=28)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed345970, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=28)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed5046f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=26)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed5046f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=26)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4bdae0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=36)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4bdae0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=36)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4bdae0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=36)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed345970, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=32)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed345970, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=32)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4ae180, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=32)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4ae180, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=32)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed2fca90, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=34)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed2fca90, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=34)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed2fca90, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=34)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed372440, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=29)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed372440, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=29)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4a9580, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=27)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4a9580, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=27)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed2e3140, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=37)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed2e3140, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=37)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed2e3140, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=37)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed372440, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=33)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed372440, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=33)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4fbf50, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=33)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4fbf50, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=33)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed5046f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=35)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed5046f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=35)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed5046f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=35)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed2fc0d0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=30)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed2fc0d0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=30)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed3a0590, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=28)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed3a0590, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=28)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4fd580, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=38)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4fd580, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=38)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fd580, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=38)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed5049e0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=34)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed5049e0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=34)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed35c9f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=34)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed35c9f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=34)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed372440, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=36)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed372440, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=36)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed372440, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=36)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed502c50, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=31)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed502c50, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=31)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4ae180, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=29)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4ae180, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=29)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4a3d60, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=39)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4a3d60, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=39)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4a3d60, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=39)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4fd580, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=35)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4fd580, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=35)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed345970, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=35)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed345970, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=35)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed31f700, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=37)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed31f700, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=37)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed31f700, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=37)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed5049e0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=32)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed5049e0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=32)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4fd580, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=30)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fd580, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=30)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed33ce10, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=40)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed33ce10, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=40)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed33ce10, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=40)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed2fca90, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=36)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed2fca90, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=36)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed5030b0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=36)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed5030b0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=36)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed38a0d0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=38)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed38a0d0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=38)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed38a0d0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=38)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4fbee0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=33)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fbee0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=33)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4fda60, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=31)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fda60, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=31)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4fcdf0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=41)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4fcdf0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=41)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fcdf0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=41)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed5046f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=37)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed5046f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=37)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed502c50, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=37)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed502c50, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=37)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4fd580, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=39)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4fd580, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=39)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4fd580, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=39)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed502a60, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=34)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed502a60, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=34)
+HwmpProtocol:DoLinkCheck("BBBBBBBBBBBBBBBBBBBBBBBBBB")
+HwmpProtocol:DoLinkCheck("BBBBBBBBBBBBBBBBBBBBBBBBBB")
+HwmpProtocol:DoLinkCheck("BBBBBBBBBBBBBBBBBBBBBBBBBB")
+HwmpProtocol:DoLinkCheck("BBBBBBBBBBBBBBBBBBBBBBBBBB")
+HwmpProtocol:DoLinkCheck("BBBBBBBBBBBBBBBBBBBBBBBBBB")
+HwmpProtocol:DoLinkCheck("BBBBBBBBBBBBBBBBBBBBBBBBBB")
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4ce510, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=32)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4ce510, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=32)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4d5770, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=42)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4d5770, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=42)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4d5770, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=42)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4ce5f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=38)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4ce5f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=38)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4fda60, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=38)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4fda60, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=38)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed3466c0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=40)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed3466c0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=40)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed3466c0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=40)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed3cc300, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=35)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed3cc300, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=35)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed5030b0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=33)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed5030b0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=33)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed38a0d0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=43)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed38a0d0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=43)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed38a0d0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=43)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4ffc10, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=39)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4ffc10, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=39)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4ce510, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=39)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4ce510, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=39)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed2fca90, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=41)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed2fca90, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=41)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed2fca90, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=41)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4fadd0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=36)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fadd0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=36)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed502c50, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=34)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed502c50, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=34)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed49f130, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=44)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed49f130, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=44)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed49f130, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=44)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed507010, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=40)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed507010, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=40)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed507010, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=40)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed507010, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=40)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed5030b0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=42)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed5030b0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=42)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed5030b0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=42)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4fc220, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=37)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fc220, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=37)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed372440, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=35)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed372440, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=35)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4feb50, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=45)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4feb50, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=45)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4feb50, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=45)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4fc220, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=41)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4fc220, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=41)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed50cac0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=41)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed50cac0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=41)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4b3890, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=43)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4b3890, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=43)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4b3890, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=43)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4ce5f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=38)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4ce5f0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=38)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4a8fc0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=36)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4a8fc0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=36)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed502f60, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=46)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed502f60, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=46)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed502f60, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=46)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed3466c0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=42)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed3466c0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=42)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed372440, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=42)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed372440, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=42)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4ffc10, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=44)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4ffc10, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=44)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4ffc10, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=44)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed4e06e0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=39)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4e06e0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=39)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed4fadd0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=37)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed4fadd0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:06, BSSID=00:00:00:00:00:06, FragNumber=0, SeqNumber=37)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed335390, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=47)
+HwmpProtocolMac:Receive(0x5771ed48cc20, 0x5771ed335390, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=47)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed335390, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:02, BSSID=00:00:00:00:00:02, FragNumber=0, SeqNumber=47)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4ce510, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=43)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4ce510, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:03, BSSID=00:00:00:00:00:03, FragNumber=0, SeqNumber=43)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed348b60, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=43)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed348b60, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:01, BSSID=00:00:00:00:00:01, FragNumber=0, SeqNumber=43)
+HwmpProtocolMac:Receive(0x5771ed457da0, 0x5771ed4a8fc0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=45)
+HwmpProtocolMac:Receive(0x5771ed496a40, 0x5771ed4a8fc0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=45)
+HwmpProtocolMac:Receive(0x5771ed4ab2c0, 0x5771ed4a8fc0, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:05, BSSID=00:00:00:00:00:05, FragNumber=0, SeqNumber=45)
+HwmpProtocolMac:Receive(0x5771ed45e8a0, 0x5771ed2edd10, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=40)
+HwmpProtocolMac:Receive(0x5771ed4a0ea0, 0x5771ed2edd10, MGT_BEACON ToDS=0, FromDS=0, MoreFrag=0, Retry=0, PowerManagement=0, MoreData=0 Duration/ID=0us, DA=ff:ff:ff:ff:ff:ff, SA=00:00:00:00:00:04, BSSID=00:00:00:00:00:04, FragNumber=0, SeqNumber=40)
+HwmpProtocol:DoDispose(0x5771ed3e5e20)
+HwmpProtocol:DoDispose(0x5771ed3e6640)
+HwmpProtocol:DoDispose(0x5771ed4a0160)
+HwmpProtocol:DoDispose(0x5771ed4aa5b0)
+HwmpProtocol:DoDispose(0x5771ed4b49f0)
+HwmpProtocol:DoDispose(0x5771ed4bee30)

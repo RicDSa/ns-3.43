@@ -1,0 +1,11 @@
+file(REMOVE_RECURSE
+  "/home/ricardosa/ns-allinone-3.43/ns-3.43/build/examples/traffic-control/ns3.43-tbf-example-default"
+  "/home/ricardosa/ns-allinone-3.43/ns-3.43/build/examples/traffic-control/ns3.43-tbf-example-default.pdb"
+  "CMakeFiles/tbf-example.dir/tbf-example.cc.o"
+  "CMakeFiles/tbf-example.dir/tbf-example.cc.o.d"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/tbf-example.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()
