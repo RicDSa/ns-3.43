@@ -655,6 +655,7 @@ class HwmpProtocol : public MeshL2RoutingProtocol
                                     //!< broadcast as a chain of unicasts
     bool m_doFlag;                  //!< Destination only HWMP flag
     bool m_rfFlag;                  //!< Reply and forward flag
+    bool m_enableFloodAndPrune;     //!< Flag to Enable Flood and Prune in the current node
     ///@}
 
     /// Random variable for random start time

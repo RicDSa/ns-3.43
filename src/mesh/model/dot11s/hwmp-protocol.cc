@@ -139,6 +139,11 @@ HwmpProtocol::GetTypeId()
                           BooleanValue(true),
                           MakeBooleanAccessor(&HwmpProtocol::m_rfFlag),
                           MakeBooleanChecker())
+            .AddAttribute("EnableFloodAndPrune",
+                          "Ativa ou desativa a Flood e Prune multicast.",
+                          BooleanValue(true),
+                          MakeBooleanAccessor(&HwmpProtocol::m_enableFloodAndPrune),
+                          MakeBooleanChecker())
             .AddTraceSource("RouteDiscoveryTime",
                             "The time of route discovery procedure",
                             MakeTraceSourceAccessor(&HwmpProtocol::m_routeDiscoveryTimeCallback),
@@ -172,6 +177,7 @@ HwmpProtocol::HwmpProtocol()
       m_unicastDataThreshold(1),
       m_doFlag(false),
       m_rfFlag(false),
+      m_enableFloodAndPrune(true),
       m_nodeTtlSum(0),   // new
       m_nodeTtlCount(0), // new
       m_nodeAvgTtl(0.0), // new
@@ -442,6 +448,12 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface,
     }
     if (destination.IsGroup())
     {
+        if (sourceIface != GetMeshPoint()->GetIfIndex() && !m_enableFloodAndPrune)
+        {
+            NS_LOG_DEBUG("Flood and Prune disabled on this node. Dropping multicast forward.");
+            return false; 
+        }
+
         Mac48Address transmitter = tag.GetAddress();
         // print transmitter
         NS_LOG_DEBUG("Transmitter: " << transmitter);
@@ -1112,6 +1124,11 @@ HwmpProtocol::StartPrune(Ptr<const Packet> packet,
                          bool use)
 {
     NS_LOG_FUNCTION(this << packet << transmitter << source << interfaceIndex << use);
+
+    if (!m_enableFloodAndPrune)
+    {
+        return;
+    }
 
     PeerLinks();
     // Peek the HWMP tag to see who the originator and the group are

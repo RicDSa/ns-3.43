@@ -86,9 +86,13 @@ main(int argc, char* argv[])
 
 
     NetDeviceContainer meshDevices = mesh.Install(wifiPhy, nodes);
-    wifiPhy.EnablePcapAll("/home/ricardosa/ns-allinone-3.43/ns-3.43/scratch/mesh1trace/mesh-hwmp");
+    wifiPhy.EnablePcapAll("/home/ricardosa/ns-allinone-3.43/ns-3.43/scratch/meshtrace/mesh-hwmp");
 
+    Ptr<Node> nodeToSilence = nodes.Get(2); 
+    Ptr<MeshPointDevice> mpd = nodeToSilence->GetDevice(0)->GetObject<MeshPointDevice>();
+    Ptr<ns3::dot11s::HwmpProtocol> hwmp = mpd->GetObject<ns3::dot11s::HwmpProtocol>();
 
+    hwmp->SetAttribute("EnableFloodAndPrune", BooleanValue(false));
 
     // Set up mobility (positions for nodes)
     MobilityHelper mobility;
