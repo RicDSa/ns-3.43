@@ -140,10 +140,15 @@ HwmpProtocol::GetTypeId()
                           MakeBooleanAccessor(&HwmpProtocol::m_rfFlag),
                           MakeBooleanChecker())
             .AddAttribute("EnableFloodAndPrune",
-                          "Ativa ou desativa a Flood e Prune multicast.",
-                          BooleanValue(true),
+                          "Ativa ou desativa o mecanismo de Flood-and-Prune.",
+                          BooleanValue(false),
                           MakeBooleanAccessor(&HwmpProtocol::m_enableFloodAndPrune),
                           MakeBooleanChecker())
+            .AddAttribute("PruneThreshold",
+                      "Valor limite para decidir fazer prune (ex: TTL médio).",
+                      DoubleValue(5.0),
+                      MakeDoubleAccessor(&HwmpProtocol::m_pruneThreshold),
+                      MakeDoubleChecker<double>());
             .AddTraceSource("RouteDiscoveryTime",
                             "The time of route discovery procedure",
                             MakeTraceSourceAccessor(&HwmpProtocol::m_routeDiscoveryTimeCallback),
@@ -151,7 +156,11 @@ HwmpProtocol::GetTypeId()
             .AddTraceSource("RouteChange",
                             "Routing table changed",
                             MakeTraceSourceAccessor(&HwmpProtocol::m_routeChangeTraceSource),
-                            "ns3::HwmpProtocol::RouteChangeTracedCallback");
+                            "ns3::HwmpProtocol::RouteChangeTracedCallback")
+            .AddTraceSource("PruneEvent",
+                            "Trace disparado quando um nó decide fazer Prune: Tempo, Nó, Razão(ID)",
+                            MakeTraceSourceAccessor(&HwmpProtocol::m_pruneEventTrace),
+                            "ns3::dot11s::HwmpProtocol::PruneEventCallback");
     return tid;
 }
 
@@ -177,7 +186,8 @@ HwmpProtocol::HwmpProtocol()
       m_unicastDataThreshold(1),
       m_doFlag(false),
       m_rfFlag(false),
-      m_enableFloodAndPrune(true),
+      m_enableFloodAndPrune(false),
+      m_maxCacheSize(1000),
       m_nodeTtlSum(0),   // new
       m_nodeTtlCount(0), // new
       m_nodeAvgTtl(0.0), // new
@@ -409,8 +419,22 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface,
                            const Mac48Address destination,
                            Ptr<const Packet> constPacket,
                            uint16_t protocolType, // ethrnet 'Protocol' field
-                           MeshL2RoutingProtocol::RouteReplyCallback routeReply)
+                           MeshL2RoutingProtocol::RouteReplyCallback routeReply,
+                           PacketDataCallback packetData, 
+                           Ptr<Ipv4> ipv4, 
+                           Ptr<Ipv6> ipv6)
 {
+    // Verificamos se é um pacote de dados (não de gestão) e se o Prune está ativo
+    if (m_enableFloodAndPrune && ShouldPrune(packet)) 
+    {
+      NS_LOG_INFO ("PRUNE: Pacote " << packet->GetUid() << " bloqueado no nó " << m_address);
+      
+      // Regista o evento no gráfico (trace source)
+      m_pruneEventTrace(Simulator::Now(), m_address, 1);
+      
+      return false; // Retornar 'false' diz ao sistema para NÃO encaminhar o pacote
+    }
+
     NS_LOG_FUNCTION(this << sourceIface << source << destination << constPacket << protocolType);
     Ptr<Packet> packet = constPacket->Copy();
     HwmpTag tag;
@@ -1896,6 +1920,41 @@ HwmpProtocol::ResetStats()
     {
         plugin->second->ResetStats();
     }
+}
+
+bool
+HwmpProtocol::ShouldPrune (Ptr<const Packet> packet)
+{
+    // Se a funcionalidade estiver desligada pelo script, nunca faz prune.
+    if (!m_enableFloodAndPrune)
+    {
+      return false;
+    }
+
+    uint64_t packetUid = packet->GetUid();
+
+    // 3. Verificar se já vimos este pacote
+    for (std::vector<uint64_t>::iterator it = m_seenPackets.begin(); it != m_seenPackets.end(); ++it)
+    {
+      if (*it == packetUid)
+        {
+          // JÁ VIMOS! É um duplicado.
+          // Devemos fazer PRUNE para parar a inundação desnecessária.
+          return true; 
+        }
+    }
+
+    // Se a memória estiver cheia, removemos o mais antigo (o primeiro)
+    if (m_seenPackets.size() >= m_maxCacheSize)
+    {
+      m_seenPackets.erase(m_seenPackets.begin());
+    }
+
+    // Adicionar o novo ID ao fim da lista
+    m_seenPackets.push_back(packetUid);
+
+  // Por defeito, não faz prune
+  return false;
 }
 
 int64_t

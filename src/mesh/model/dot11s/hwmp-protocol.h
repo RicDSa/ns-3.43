@@ -228,6 +228,9 @@ class HwmpProtocol : public MeshL2RoutingProtocol
     // snapshot storage (no duplicates)
     std::set<Mac48Address> m_activePeers;
 
+    // Memória para guardar os IDs dos pacotes recentes (para detetar duplicados)
+    std::vector<uint64_t> m_seenPackets;
+
     // the interval & handle for the periodic event
     Time m_linkCheckInterval;
     EventId m_linkCheckEvent;
@@ -237,11 +240,13 @@ class HwmpProtocol : public MeshL2RoutingProtocol
 
     uint64_t m_nodeTtlSum;   // sum of all TTLs seen by this node
     uint32_t m_nodeTtlCount; // count of packets seen
+    uint32_t m_maxCacheSize; // Tamanho máximo da memória para não encher a RAM (ex: últimos 100 pacotes)
     double m_nodeAvgTtl;     // current running average TTL, EWMA of observed TTLs
     double m_alpha;          // EWMA weight (e.g. 0.1)
     double m_nodeVarTtl;     // EWMA of squared deviations (variance)
     void EWMANode(uint8_t ttl);
     void EWMASender(uint8_t ttl, Mac48Address sender);
+    
 
     // Map to store prune entries
     // key = (source, destination, multicastGroup)
@@ -252,6 +257,13 @@ class HwmpProtocol : public MeshL2RoutingProtocol
     void AddPruneEntry(Mac48Address src, Mac48Address dst, Mac48Address multicastGroup);
 
     bool IsPruned(Mac48Address src, Mac48Address dst, Mac48Address multicastGroup) const;
+
+    /**
+     * \brief Decide se o pacote deve ser podado (descarta) ou encaminhado.
+     * \param packet O pacote a analisar.
+     * \return true se for para fazer Prune, false se for para manter.
+     */
+    bool ShouldPrune (Ptr<const Packet> packet);
 
     static std::set<Mac48Address> m_multicastGroupNodes; // set of multicast group nodes
     // key = (originator, multicastGroup)
@@ -656,11 +668,15 @@ class HwmpProtocol : public MeshL2RoutingProtocol
     bool m_doFlag;                  //!< Destination only HWMP flag
     bool m_rfFlag;                  //!< Reply and forward flag
     bool m_enableFloodAndPrune;     //!< Flag to Enable Flood and Prune in the current node
+    double m_pruneThreshold;
     ///@}
 
     /// Random variable for random start time
     Ptr<UniformRandomVariable> m_coefficient;                           ///< coefficient
     Callback<std::vector<Mac48Address>, uint32_t> m_neighboursCallback; ///< neighbors callback
+
+    // Sonda para contar eventos de Prune
+    TracedCallback<Time, Mac48Address, uint32_t> m_pruneEventTrace;
 };
 } // namespace dot11s
 } // namespace ns3
