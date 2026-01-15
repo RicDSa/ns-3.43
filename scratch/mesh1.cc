@@ -388,7 +388,7 @@ class MeshTest
 
 MeshTest::MeshTest()
     : m_xSize(3),
-      m_ySize(1),
+      m_ySize(3),
       m_step(50.0),
       m_randomStart(0.1),
       m_totalTime(10.0),

@@ -86,7 +86,7 @@ main(int argc, char* argv[])
 
 
     NetDeviceContainer meshDevices = mesh.Install(wifiPhy, nodes);
-    wifiPhy.EnablePcapAll("/home/ricardosa/ns-allinone-3.43/ns-3.43/scratch/meshtrace/mesh-hwmp");
+    wifiPhy.EnablePcapAll("/home/ricardosa/ns-allinone-3.43/ns-3.43/scratch/meshtrace");
 
     Ptr<Node> nodeToSilence = nodes.Get(2); 
     Ptr<MeshPointDevice> mpd = nodeToSilence->GetDevice(0)->GetObject<MeshPointDevice>();
@@ -147,18 +147,27 @@ main(int argc, char* argv[])
                             InetSocketAddress(Ipv4Address(targetAddr.c_str()), 9));
     onoffHelper.SetAttribute("DataRate", DataRateValue(DataRate("8Mbps")));
     onoffHelper.SetAttribute("MaxBytes", UintegerValue(1024));
-    auto source = onoffHelper.Install(nodes.Get(0)); // Node A
-    source.Start(Seconds(1.1));
-    source.Stop(Seconds(10.0));
+    //auto source = onoffHelper.Install(nodes.Get(0)); // Node A
+    NodeContainer sourceNodes;
+    sourceNodes.Add(nodes.Get(0)); // Nó A (original)
+    sourceNodes.Add(nodes.Get(4)); // Nó E (nova fonte, por exemplo)
+    // Pode adicionar mais nós aqui: sourceNodes.Add(nodes.Get(2));
+
+    // Instalar a aplicação em todos os nós definidos no contentor
+    ApplicationContainer sourceApps = onoffHelper.Install(sourceNodes);
+    // Configurar tempos de início e fim para todas
+    sourceApps.Start(Seconds(1.1));
+    sourceApps.Stop(Seconds(10.0));
 
     NS_LOG_INFO("Checking if OnOff Application is installed and started");
     // Connect sent packet callback
-    source.Get(0)->GetObject<OnOffApplication>()->TraceConnectWithoutContext(
-        "Tx",
-        MakeCallback(PacketSentCallback));
-
-
-
+    for (uint32_t i = 0; i < sourceApps.GetN(); ++i)
+    {
+        // Obtemos a aplicação 'i' e ligamos o trace 'Tx'
+        sourceApps.Get(i)->GetObject<OnOffApplication>()->TraceConnectWithoutContext(
+            "Tx",
+            MakeCallback(PacketSentCallback));
+    }
         
 
     // Add animation
