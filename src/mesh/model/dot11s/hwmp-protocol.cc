@@ -148,7 +148,7 @@ HwmpProtocol::GetTypeId()
                       "Valor limite para decidir fazer prune (ex: TTL médio).",
                       DoubleValue(5.0),
                       MakeDoubleAccessor(&HwmpProtocol::m_pruneThreshold),
-                      MakeDoubleChecker<double>());
+                      MakeDoubleChecker<double>())
             .AddTraceSource("RouteDiscoveryTime",
                             "The time of route discovery procedure",
                             MakeTraceSourceAccessor(&HwmpProtocol::m_routeDiscoveryTimeCallback),
@@ -158,7 +158,7 @@ HwmpProtocol::GetTypeId()
                             MakeTraceSourceAccessor(&HwmpProtocol::m_routeChangeTraceSource),
                             "ns3::HwmpProtocol::RouteChangeTracedCallback")
             .AddTraceSource("PruneEvent",
-                            "Trace disparado quando um nó decide fazer Prune: Tempo, Nó, Razão(ID)",
+                            "Trace disparado quando um nó decide fazer Prune",
                             MakeTraceSourceAccessor(&HwmpProtocol::m_pruneEventTrace),
                             "ns3::dot11s::HwmpProtocol::PruneEventCallback");
     return tid;
@@ -414,25 +414,16 @@ HwmpProtocol::EWMANode(uint8_t ttl)
 // END NEW CODE
 
 bool
-HwmpProtocol::RequestRoute(uint32_t sourceIface,
-                           const Mac48Address source,
-                           const Mac48Address destination,
-                           Ptr<const Packet> constPacket,
-                           uint16_t protocolType, // ethrnet 'Protocol' field
-                           MeshL2RoutingProtocol::RouteReplyCallback routeReply,
-                           PacketDataCallback packetData, 
-                           Ptr<Ipv4> ipv4, 
-                           Ptr<Ipv6> ipv6)
+HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
+                            Mac48Address destination, Ptr<const Packet> constPacket,
+                            uint16_t protocolType, RouteReplyCallback routeReply)
 {
     // Verificamos se é um pacote de dados (não de gestão) e se o Prune está ativo
-    if (m_enableFloodAndPrune && ShouldPrune(packet)) 
+    if (m_enableFloodAndPrune && ShouldPrune(constPacket)) 
     {
-      NS_LOG_INFO ("PRUNE: Pacote " << packet->GetUid() << " bloqueado no nó " << m_address);
-      
-      // Regista o evento no gráfico (trace source)
+      NS_LOG_DEBUG ("PRUNE: Pacote " << constPacket->GetUid() << " bloqueado no nó " << m_address);
       m_pruneEventTrace(Simulator::Now(), m_address, 1);
-      
-      return false; // Retornar 'false' diz ao sistema para NÃO encaminhar o pacote
+      return false;
     }
 
     NS_LOG_FUNCTION(this << sourceIface << source << destination << constPacket << protocolType);
@@ -640,6 +631,16 @@ HwmpProtocol::RemoveRoutingStuff(uint32_t fromIface,
                                  Ptr<Packet> packet,
                                  uint16_t& protocolType)
 {
+    // Verifica se é um pacote Multicast (Group) ou destinado a nós
+    if (destination.IsGroup() || destination == m_address) 
+    {
+        // NS_LOG_UNCOND força a impressão no terminal sem precisar de configurar variáveis de ambiente
+        NS_LOG_UNCOND("[RECEBIDO] O Nó " << m_address 
+                      << " recebeu o pacote " << packet->GetUid() 
+                      << " vindo de " << source 
+                      << " (Destino: " << destination << ")");
+    }
+
     HwmpTag tag;
     if (!packet->RemovePacketTag(tag))
     {
