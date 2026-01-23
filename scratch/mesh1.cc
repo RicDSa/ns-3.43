@@ -70,6 +70,7 @@
  */
 
 #include "ns3/applications-module.h"
+#include "ns3/flow-monitor-module.h"
 #include "ns3/core-module.h"
 #include "ns3/internet-module.h"
 #include "ns3/ipv4-global-routing-helper.h"
@@ -388,7 +389,7 @@ class MeshTest
 
 MeshTest::MeshTest()
     : m_xSize(3),
-      m_ySize(3),
+      m_ySize(2),
       m_step(50.0),
       m_randomStart(0.1),
       m_totalTime(10.0),
@@ -559,80 +560,42 @@ MeshTest::InstallInternetStack()
 void
 MeshTest::InstallApplication()
 {
-    // Set up a multicast receiver on the node
-    for (uint32_t i = 1; i < nodes.GetN(); ++i)
-    {
-        // Check if the node is in the multicast group
-        if (multicastGroupNodes.find(i) != multicastGroupNodes.end())
-        {
-            Ptr<Socket> recvSink =
-                Socket::CreateSocket(nodes.Get(i), UdpSocketFactory::GetTypeId());
-            // Define the IP address and port for the socket to listen on
-            InetSocketAddress local = InetSocketAddress(Ipv4Address::GetAny(), multicastPort);
+    // 1. Definir o endereço de grupo Multicast
+    // (Pode ser qualquer IP na gama 224.x.x.x a 239.x.x.x)
+    Ipv4Address multicastGroup("224.1.2.3");
+    uint16_t port = 9;
 
-            // Allow the socket to receive broadcast packets
-            recvSink->SetAllowBroadcast(true);
-            // Set the callback function to be called whenever the socket receives a packet
-            recvSink->SetRecvCallback(MakeCallback(&ReceivePacket));
+    // 2. Configurar o RECETOR (Sink) em TODOS os nós
+    // Isto garante que todos os nós estão à escuta.
+    // Assim podemos ver até onde o pacote chega antes de ser "podado".
+    PacketSinkHelper sink("ns3::UdpSocketFactory",
+                          InetSocketAddress(Ipv4Address::GetAny(), port));
 
-            // Bind the socket to the configured address and port
-            recvSink->Bind(local);
+    ApplicationContainer sinkApps = sink.Install(nodes);
+    sinkApps.Start(Seconds(0.0));
+    sinkApps.Stop(Seconds(m_totalTime));
 
-            std::cout << "Setting up multicast receiver on node " << i << std::endl;
-        }
-        else
-        {
-            std::cout << "Node " << i << " is not in the multicast group. Skipping receiver setup."
-                      << std::endl;
-        }
-    }
+    // 3. Configurar o EMISSOR (Source) - Nó 0
+    // Usamos OnOffHelper para simular um fluxo de vídeo ou dados constante.
+    OnOffHelper onoff("ns3::UdpSocketFactory",
+                      Address(InetSocketAddress(multicastGroup, port)));
 
-    // Set up a multicast sender on the first node
-    // Obtém o objeto Ipv4 do nó 0
-    Ptr<Ipv4> ipv4 = nodes.Get(0)->GetObject<Ipv4>();
+    onoff.SetConstantRate(DataRate("500kbps")); // Ajuste a velocidade aqui (ex: 1Mbps)
+    onoff.SetAttribute("PacketSize", UintegerValue(1024));
 
-    // Obtém o endereço IP da interface 1 do nó 0
-    Ipv4Address ipAddress = ipv4->GetAddress(1, 0).GetLocal();
+    ApplicationContainer sourceApps;
 
-    Ptr<Socket> source = Socket::CreateSocket(nodes.Get(0), UdpSocketFactory::GetTypeId());
-    // Liga o socket ao endereço IP "10.1.1.1" e à porta 8080 no emissor.
-    source->Bind(InetSocketAddress(ipAddress, multicastPort));
-    // Define o endereço de destino do multicast (grupo multicast e porta)
-    InetSocketAddress remote = InetSocketAddress(multicastGroup, multicastPort);
-    // Permite que o socket envie pacotes em broadcast
-    source->SetAllowBroadcast(true);
-    // source->SetIpTtl(10);
-    //  Estabelece a conexão com o grupo multicast e a porta
-    source->Connect(remote);
+    // Instalar a fonte no Nó 0
+    sourceApps.Add(onoff.Install(nodes.Get(0)));
 
-    /*     Simulator::ScheduleWithContext(source->GetNode()->GetId(),
-                                       Seconds(1.0),
-                                       &SendMulticastPacket,
-                                       source,
-                                       m_packetSize,
-                                       multicastGroup,
-                                       remote); */
+    // Se quiser adicionar mais fontes (ex: Nó 1 também envia), descomente:
+    // sourceApps.Add(onoff.Install(nodes.Get(1)));
 
-    Simulator::Schedule(Seconds(1.0), // Send after 1 second
-                        &SendMulticastPacket,
-                        source,
-                        m_packetSize,
-                        multicastGroup,
-                        remote);
-    /*
-        Simulator::Schedule(Seconds(3.0), // Send after 1 second
-                            &SendMulticastPacket,
-                            source,
-                            m_packetSize,
-                            multicastGroup,
-                            remote);
-     */
-    /*  Simulator::Schedule(Seconds(3.0), // Send after 3 second
-                         &SendMulticastPacket,
-                         source,
-                         m_packetSize,
-                         multicastGroup,
-                         remote);  */
+    sourceApps.Start(Seconds(1.0)); // Começa a enviar ao fim de 1 segundo
+    sourceApps.Stop(Seconds(m_totalTime));
+
+    std::cout << "Multicast: Nó 0 -> Grupo " << multicastGroup
+              << " (" << m_totalTime << "s)" << std::endl;
 }
 
 int
@@ -655,6 +618,9 @@ MeshTest::Run()
 
     AnimationInterface anim("mesh1.xml");
 
+    FlowMonitorHelper flowmon;
+    Ptr<FlowMonitor> monitor = flowmon.InstallAll();
+
     Simulator::Schedule(Seconds(m_totalTime), &MeshTest::Report, this);
     Simulator::Stop(Seconds(m_totalTime + 2));
 
@@ -664,8 +630,9 @@ MeshTest::Run()
 
     Simulator::Run();
     // PrintEstablishedPeers();
-    PrintAllHwmpMetrics();
     //   CheckPeerings();
+    monitor->CheckForLostPackets();
+    monitor->SerializeToXmlFile("resultados_multicast.xml", true, true);
 
     Simulator::Destroy();
 
