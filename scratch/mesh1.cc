@@ -112,6 +112,16 @@ std::set<uint32_t> multicastGroupNodes = {1, 3, 5, 7};
 // Global set to track received packet IDs
 std::set<uint32_t> receivedPacketIds;
 
+uint32_t g_multicastRxCount = 0; // Variável global para contar
+
+void
+ContarPacoteRx (std::string context, Ptr<const Packet> packet, const Address &from)
+{
+    g_multicastRxCount++;
+    // Se quiser ver no terminal cada pacote a chegar, descomente a linha abaixo:
+    // std::cout << "DEBUG: Pacote recebido! Total: " << g_multicastRxCount << std::endl;
+}
+
 void
 SendMulticastPacket(Ptr<Socket> socket,
                     uint32_t packetSize,
@@ -388,8 +398,8 @@ class MeshTest
 };
 
 MeshTest::MeshTest()
-    : m_xSize(3),
-      m_ySize(2),
+    : m_xSize(4),
+      m_ySize(3),
       m_step(50.0),
       m_randomStart(0.1),
       m_totalTime(10.0),
@@ -501,18 +511,28 @@ MeshTest::CreateNodes()
         // Use ListPositionAllocator to manually set positions
         Ptr<ListPositionAllocator> positionAlloc = CreateObject<ListPositionAllocator>();
 
-        positionAlloc->Add(Vector(0.0, 0.0, 0.0));   // Node 0
+        // --- LINHA DE BAIXO (Source 1 está aqui no 0) ---
+        positionAlloc->Add(Vector(0.0, 0.0, 0.0));   // Node 0 (SOURCE 1)
         positionAlloc->Add(Vector(10.0, 0.0, 0.0));  // Node 1
-        positionAlloc->Add(Vector(20.0, 5.0, 0.0));  // Node 2
-        positionAlloc->Add(Vector(5.0, 15.0, 0.0));  // Node 3
-        positionAlloc->Add(Vector(15.0, 10.0, 0.0)); // Node 4
-        positionAlloc->Add(Vector(5.0, 10.0, 0.0)); // Node 5
-        positionAlloc->Add(Vector(10.0, 5.0, 0.0)); // Node 6
+        positionAlloc->Add(Vector(20.0, 0.0, 0.0));  // Node 2
+        positionAlloc->Add(Vector(30.0, 0.0, 0.0));  // Node 3
+
+        // --- LINHA DO MEIO ---
+        positionAlloc->Add(Vector(0.0, 10.0, 0.0));  // Node 4
+        positionAlloc->Add(Vector(10.0, 10.0, 0.0)); // Node 5
+        positionAlloc->Add(Vector(20.0, 15.0, 0.0)); // Node 6 (Desalinhado propositadamente)
+        positionAlloc->Add(Vector(30.0, 10.0, 0.0)); // Node 7
+
+        // --- LINHA DE CIMA (Source 2 está aqui no 11) ---
+        positionAlloc->Add(Vector(0.0, 20.0, 0.0));  // Node 8
+        positionAlloc->Add(Vector(10.0, 20.0, 0.0)); // Node 9
+        positionAlloc->Add(Vector(20.0, 20.0, 0.0)); // Node 10
+        positionAlloc->Add(Vector(30.0, 20.0, 0.0)); // Node 11 (SOURCE 2)
 
      
         mobility.SetPositionAllocator(positionAlloc);
-        
         mobility.Install(nodes); 
+
     if (m_pcap)
     {
         wifiPhy.EnablePcapAll(
@@ -552,9 +572,14 @@ MeshTest::InstallInternetStack()
 
     Ipv4StaticRoutingHelper multicastRoutingHelper;
 
-    Ptr<Node> sender = nodes.Get(0);
-    Ptr<NetDevice> senderIf = meshDevices.Get(0);
-    multicastRoutingHelper.SetDefaultMulticastRoute(sender, senderIf);
+    for (uint32_t i = 0; i < nodes.GetN(); ++i)
+    {
+        Ptr<Node> node = nodes.Get(i);
+        Ptr<NetDevice> netDev = meshDevices.Get(i);
+        
+        // Dizer ao nó: "Se quiseres enviar Multicast, usa esta interface Mesh"
+        multicastRoutingHelper.SetDefaultMulticastRoute(node, netDev);
+    }
 }
 
 void
@@ -590,6 +615,13 @@ MeshTest::InstallApplication()
 
     // Se quiser adicionar mais fontes (ex: Nó 1 também envia), descomente:
     // sourceApps.Add(onoff.Install(nodes.Get(1)));
+    // Last node is the 2 source
+    if (nodes.GetN() >= 2) {
+        // Se tivermos nós suficientes, metemos o último nó como fonte também
+        uint32_t lastNodeIndex = nodes.GetN() - 1; 
+        sourceApps.Add(onoff.Install(nodes.Get(lastNodeIndex)));
+        std::cout << "Source 2 configurada no Nó " << lastNodeIndex << std::endl;
+    }
 
     sourceApps.Start(Seconds(1.0)); // Começa a enviar ao fim de 1 segundo
     sourceApps.Stop(Seconds(m_totalTime));
@@ -618,13 +650,38 @@ MeshTest::Run()
 
     AnimationInterface anim("mesh1.xml");
 
+    // 2. Pintar TODOS os nós de AZUL (Receptores/Sinks) por defeito
+    // (R=0, G=0, B=255)
+    for (uint32_t i = 0; i < nodes.GetN(); ++i)
+    {
+        anim.UpdateNodeColor (nodes.Get(i), 0, 0, 255); 
+        anim.UpdateNodeDescription (nodes.Get(i), "Receiver"); 
+    }
+
+    // 3. Pintar a SOURCE 1 (Nó 0) de VERMELHO
+    // (R=255, G=0, B=0)
+    anim.UpdateNodeColor (nodes.Get(0), 255, 0, 0); 
+    anim.UpdateNodeDescription (nodes.Get(0), "Source A"); 
+    anim.UpdateNodeSize (nodes.Get(0), 1.5, 1.5); // Fica um pouco maior
+
+    // 4. Pintar a SOURCE 2 (Último Nó) de VERMELHO
+    if (nodes.GetN() > 1) 
+    {
+        uint32_t lastNode = nodes.GetN() - 1;
+        anim.UpdateNodeColor (nodes.Get(lastNode), 255, 0, 0); 
+        anim.UpdateNodeDescription (nodes.Get(lastNode), "Source B");
+        anim.UpdateNodeSize (nodes.Get(lastNode), 1.5, 1.5);
+    }
+
     FlowMonitorHelper flowmon;
     Ptr<FlowMonitor> monitor = flowmon.InstallAll();
 
     Simulator::Schedule(Seconds(m_totalTime), &MeshTest::Report, this);
     Simulator::Stop(Seconds(m_totalTime + 2));
 
-    // Simulator::Schedule(Seconds(10.0), &CheckPeerings);
+    // Isto diz ao simulador: "Sempre que o PacketSink receber algo (Rx), chama a função ContarPacoteRx"
+    Config::Connect ("/NodeList/*/ApplicationList/*/$ns3::PacketSink/Rx", 
+                     MakeCallback (&ContarPacoteRx));
 
     // PrintAllHwmpMetrics();
 
@@ -633,6 +690,11 @@ MeshTest::Run()
     //   CheckPeerings();
     monitor->CheckForLostPackets();
     monitor->SerializeToXmlFile("resultados_multicast.xml", true, true);
+
+    std::cout << "\n##################################################" << std::endl;
+    std::cout << "RESULTADO FINAL:" << std::endl;
+    std::cout << ">>> TOTAL PACOTES MULTICAST RECEBIDOS: " << g_multicastRxCount << " <<<" << std::endl;
+    std::cout << "##################################################\n" << std::endl;
 
     Simulator::Destroy();
 
