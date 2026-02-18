@@ -218,6 +218,12 @@ class HwmpProtocol : public MeshL2RoutingProtocol
     /// allow HwmpProtocolMac class friend access
     friend class HwmpProtocolMac;
 
+    /// Random varaible for the Jitter
+    Ptr<UniformRandomVariable> m_jitter;
+    void InvokeRouteReply (RouteReplyCallback cb, bool result, Ptr<Packet> packet, Mac48Address src, Mac48Address dst, uint16_t protocol, uint32_t interface);
+    /// Maximum delay time (Jitter)
+    Time m_maxJitter;
+
     // NEW NEW CODE
     Ptr<MeshPointDevice> m_device;
 
@@ -263,7 +269,7 @@ class HwmpProtocol : public MeshL2RoutingProtocol
      * \param packet O pacote a analisar.
      * \return true se for para fazer Prune, false se for para manter.
      */
-    bool ShouldPrune (Ptr<const Packet> packet);
+    bool ShouldPrune (Ptr<const Packet> packet, Mac48Address destination);
 
     static std::set<Mac48Address> m_multicastGroupNodes; // set of multicast group nodes
     // key = (originator, multicastGroup)
@@ -675,8 +681,9 @@ class HwmpProtocol : public MeshL2RoutingProtocol
     Ptr<UniformRandomVariable> m_coefficient;                           ///< coefficient
     Callback<std::vector<Mac48Address>, uint32_t> m_neighboursCallback; ///< neighbors callback
 
-    // Sonda para contar eventos de Prune
+    // It serves to cont prune events
     TracedCallback<Time, Mac48Address, uint32_t> m_pruneEventTrace;
+
 };
 } // namespace dot11s
 } // namespace ns3

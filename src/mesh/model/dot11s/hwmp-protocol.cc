@@ -158,9 +158,14 @@ HwmpProtocol::GetTypeId()
                             MakeTraceSourceAccessor(&HwmpProtocol::m_routeChangeTraceSource),
                             "ns3::HwmpProtocol::RouteChangeTracedCallback")
             .AddTraceSource("PruneEvent",
-                            "Trace disparado quando um nó decide fazer Prune",
+                            "Trace triggered when a node decides to prune.",
                             MakeTraceSourceAccessor(&HwmpProtocol::m_pruneEventTrace),
-                            "ns3::dot11s::HwmpProtocol::PruneEventCallback");
+                            "ns3::dot11s::HwmpProtocol::PruneEventCallback")
+            .AddAttribute ("MaxJitter",
+                           "Maximum random delay time to avoid collisions (Broadcast Storm).",
+                           TimeValue (MilliSeconds (10)), // Valor por defeito 10ms
+                           MakeTimeAccessor (&HwmpProtocol::m_maxJitter),
+                           MakeTimeChecker ());
     return tid;
 }
 
@@ -198,6 +203,8 @@ HwmpProtocol::HwmpProtocol()
 {
     NS_LOG_FUNCTION(this);
     m_coefficient = CreateObject<UniformRandomVariable>();
+
+    m_jitter = CreateObject<UniformRandomVariable> ();
 }
 
 HwmpProtocol::~HwmpProtocol()
@@ -410,6 +417,12 @@ HwmpProtocol::EWMANode(uint8_t ttl)
                        << " (sum=" << m_nodeTtlSum << ", count=" << m_nodeTtlCount << ")");
 }
 
+void
+HwmpProtocol::InvokeRouteReply (RouteReplyCallback cb, bool result, Ptr<Packet> packet, Mac48Address src, Mac48Address dst, uint16_t protocol, uint32_t interface)
+{
+  // Apenas invoca a callback original
+  cb(result, packet, src, dst, protocol, interface);
+}
 
 // END NEW CODE
 
@@ -419,12 +432,12 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
                             uint16_t protocolType, RouteReplyCallback routeReply)
 {
     // Verificamos se é um pacote de dados (não de gestão) e se o Prune está ativo
-    if (m_enableFloodAndPrune && ShouldPrune(constPacket)) 
-    {
+    if (m_enableFloodAndPrune && (source != m_address) && ShouldPrune(constPacket, destination)) 
+{
       NS_LOG_DEBUG ("PRUNE: Pacote " << constPacket->GetUid() << " bloqueado no nó " << m_address);
       m_pruneEventTrace(Simulator::Now(), m_address, 1);
       return false;
-    }
+}
 
     NS_LOG_FUNCTION(this << sourceIface << source << destination << constPacket << protocolType);
     Ptr<Packet> packet = constPacket->Copy();
@@ -606,7 +619,19 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
                 NS_LOG_INFO("Forwarding multicast packet from node " << GetAddress()
                                                                      << " to receiver " << address);
                 volatile Mac48Address src48 = source;
-                routeReply(true, packetCopy, source, destination, protocolType, plugin->first);
+                // Calculate a random delay between 0 and MaxJitter
+                Time delay = MicroSeconds (m_jitter->GetValue (0, m_maxJitter.GetMicroSeconds ()));
+                // Schedule the delayed shipment instead of calling immediately.
+                Simulator::Schedule (delay, 
+                                     &HwmpProtocol::InvokeRouteReply, // Função auxiliar
+                                     this,
+                                     routeReply,
+                                     true, 
+                                     packetCopy, 
+                                     source, 
+                                     destination, 
+                                     protocolType, 
+                                     plugin->first);
             }
         }
     }
@@ -1136,7 +1161,13 @@ HwmpProtocol::SendPrune(std::vector<std::pair<Mac48Address, uint32_t>>& entries,
     prune.SetOriginator(originator);
     auto prune_sender = m_interfaces.find(interface);
     NS_ASSERT(prune_sender != m_interfaces.end());
-    prune_sender->second->SendPrune(prune, receiver);
+    Time delay = MicroSeconds (m_jitter->GetValue (0, m_maxJitter.GetMicroSeconds ()));
+    
+    Simulator::Schedule (delay, 
+                         &HwmpProtocolMac::SendPrune, 
+                         prune_sender->second, 
+                         prune, 
+                         receiver);
     m_stats.initiatedPrune++;
 }
 
@@ -1924,7 +1955,7 @@ HwmpProtocol::ResetStats()
 }
 
 bool
-HwmpProtocol::ShouldPrune (Ptr<const Packet> packet)
+HwmpProtocol::ShouldPrune (Ptr<const Packet> packet, Mac48Address destination)
 {
     // Se a funcionalidade estiver desligada pelo script, nunca faz prune.
     if (!m_enableFloodAndPrune)
@@ -1954,6 +1985,33 @@ HwmpProtocol::ShouldPrune (Ptr<const Packet> packet)
     // Adicionar o novo ID ao fim da lista
     m_seenPackets.push_back(packetUid);
 
+
+    HwmpTag tag;
+    packet->PeekPacketTag(tag);
+
+    bool amInterested = false;
+    if (m_multicastGroupNodes.find(GetAddress()) != m_multicastGroupNodes.end()) {
+        amInterested = true;
+    }
+
+    bool hasDownstreamDependents = false;
+
+    for (auto const& peer : m_lastActivePeerAddrs) {
+        
+        bool isChildPruned = IsPruned(peer.first, GetAddress(), destination);
+
+        if (peer.second == 0) { // Found one Node bellow   
+            hasDownstreamDependents = true;
+            break; 
+        }
+    }
+
+    if (!amInterested && !hasDownstreamDependents) {
+        NS_LOG_DEBUG ("ShouldPrune: The Node " << GetAddress() << " is a dead leaf. Blocking the packet.");
+        
+        return true; 
+    }
+
   // Por defeito, não faz prune
   return false;
 }
@@ -1963,8 +2021,11 @@ HwmpProtocol::AssignStreams(int64_t stream)
 {
     NS_LOG_FUNCTION(this << stream);
     m_coefficient->SetStream(stream);
-    return 1;
+    
+    m_jitter->SetStream(stream + 1); // We use +1 to avoid being equal to the m_coefficient.
+    return 2; // We return 2 because we use 2 streams
 }
+
 
 Ptr<HwmpRtable>
 HwmpProtocol::GetRoutingTable() const
