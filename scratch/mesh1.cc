@@ -162,7 +162,7 @@ ReceivePacket(Ptr<Socket> socket)
 {
     std::cout << "Received packet at Node: " << socket->GetNode()->GetId() << std::endl;
     Ptr<Node> node = socket->GetNode(); // Get the receiving node
-    uint32_t nodeId = node->GetId();    // Get the node ID
+    // uint32_t nodeId = node->GetId();   
     Ptr<Packet> packet;
     Address from;
 
@@ -385,6 +385,8 @@ class MeshTest
     Ipv4InterfaceContainer interfaces;
     /// MeshHelper. Report is not static methods
     MeshHelper mesh;
+    bool m_enableFloodAndPrune;
+    std::string m_maxJitter;
 
   private:
     /// Create nodes and setup their mobility
@@ -398,8 +400,8 @@ class MeshTest
 };
 
 MeshTest::MeshTest()
-    : m_xSize(4),
-      m_ySize(3),
+    : m_xSize(3),
+      m_ySize(2),
       m_step(50.0),
       m_randomStart(0.1),
       m_totalTime(10.0),
@@ -410,7 +412,9 @@ MeshTest::MeshTest()
       m_pcap(true),
       m_ascii(true),
       m_stack("ns3::Dot11sStack"),
-      m_root("ff:ff:ff:ff:ff:ff")
+      m_root("ff:ff:ff:ff:ff:ff"),
+      m_enableFloodAndPrune(false),
+      m_maxJitter("10ms")
 {
 }
 
@@ -432,8 +436,13 @@ MeshTest::Configure(int argc, char* argv[])
     cmd.AddValue("ascii", "Enable Ascii traces on interfaces", m_ascii);
     cmd.AddValue("stack", "Type of protocol stack. ns3::Dot11sStack by default", m_stack);
     cmd.AddValue("root", "Mac address of root mesh point in HWMP", m_root);
+    cmd.AddValue("enableFloodAndPrune", "Enable Flood and Prune mechanism", m_enableFloodAndPrune);
+    cmd.AddValue("MaxJitter", "Random Jitter to avoid collisions", m_maxJitter);
 
     cmd.Parse(argc, argv);
+    Config::SetDefault ("ns3::dot11s::HwmpProtocol::EnableFloodAndPrune", BooleanValue (m_enableFloodAndPrune));
+    Config::SetDefault ("ns3::dot11s::HwmpProtocol::MaxJitter", StringValue (m_maxJitter));
+
     NS_LOG_DEBUG("Grid:" << m_xSize << "*" << m_ySize);
     NS_LOG_DEBUG("Simulation time: " << m_totalTime << " s");
     if (m_ascii)
@@ -445,7 +454,7 @@ MeshTest::Configure(int argc, char* argv[])
 void
 MeshTest::CreateNodes()
 {
-    nodes.Create(m_xSize * m_ySize);
+    nodes.Create(6);
     std::cout << "Number of nodes created: " << nodes.GetN() << std::endl;
 
     // Configure YansWifiChannel
@@ -485,53 +494,20 @@ MeshTest::CreateNodes()
     // AssignStreams can optionally be used to control random variable streams
     mesh.AssignStreams(meshDevices, 0);
 
-    /* // Install mobility model
+    
     MobilityHelper mobility;
     mobility.SetMobilityModel("ns3::ConstantPositionMobilityModel");
+    //Posicion
+    Ptr<ListPositionAllocator> positionAlloc = CreateObject<ListPositionAllocator>();
+    positionAlloc->Add(Vector(0.0, 0.0, 0.0));  // Nó 0: Source (Início)
+    positionAlloc->Add(Vector(20.0, 0.0, 0.0)); // Nó 1: Relay 
+    positionAlloc->Add(Vector(20.0, 10.0, 0.0)); // Nó 2: Relay (Centro da Árvore)
+    positionAlloc->Add(Vector(40.0, 10.0, 0.0)); // Nó 3: Receiver 1 (Ramo de cima)
+    positionAlloc->Add(Vector(45.0, 15.0, 0.0));  // Nó 4: Receiver 2 (Ramo de baixo)
+    positionAlloc->Add(Vector(30.0, 25.0, 0.0)); // Nó 5: Nó inútil (Ramo morto, vai fazer Prune)
+    
+    mobility.SetPositionAllocator(positionAlloc);
     mobility.Install(nodes);
-
-    // Manually set positions
-    Ptr<MobilityModel> mob;
-    mob = nodes.Get(0)->GetObject<MobilityModel>();
-    mob->SetPosition(Vector(0.0, 0.0, 0.0));
-
-    mob = nodes.Get(1)->GetObject<MobilityModel>();
-    mob->SetPosition(Vector(10.0, 0.0, 0.0));
-
-    mob = nodes.Get(2)->GetObject<MobilityModel>();
-    mob->SetPosition(Vector(20.0, 5.0, 0.0));
-
-    mob = nodes.Get(3)->GetObject<MobilityModel>();
-    mob->SetPosition(Vector(5.0, 15.0, 0.0));
- */
-   /*  mob = nodes.Get(4)->GetObject<MobilityModel>();
-    mob->SetPosition(Vector(15.0, 10.0, 0.0)); */
-    MobilityHelper mobility;
-    mobility.SetMobilityModel("ns3::ConstantPositionMobilityModel");
-        // Use ListPositionAllocator to manually set positions
-        Ptr<ListPositionAllocator> positionAlloc = CreateObject<ListPositionAllocator>();
-
-        // --- LINHA DE BAIXO (Source 1 está aqui no 0) ---
-        positionAlloc->Add(Vector(0.0, 0.0, 0.0));   // Node 0 (SOURCE 1)
-        positionAlloc->Add(Vector(10.0, 0.0, 0.0));  // Node 1
-        positionAlloc->Add(Vector(20.0, 0.0, 0.0));  // Node 2
-        positionAlloc->Add(Vector(30.0, 0.0, 0.0));  // Node 3
-
-        // --- LINHA DO MEIO ---
-        positionAlloc->Add(Vector(0.0, 10.0, 0.0));  // Node 4
-        positionAlloc->Add(Vector(10.0, 10.0, 0.0)); // Node 5
-        positionAlloc->Add(Vector(20.0, 15.0, 0.0)); // Node 6 (Desalinhado propositadamente)
-        positionAlloc->Add(Vector(30.0, 10.0, 0.0)); // Node 7
-
-        // --- LINHA DE CIMA (Source 2 está aqui no 11) ---
-        positionAlloc->Add(Vector(0.0, 20.0, 0.0));  // Node 8
-        positionAlloc->Add(Vector(10.0, 20.0, 0.0)); // Node 9
-        positionAlloc->Add(Vector(20.0, 20.0, 0.0)); // Node 10
-        positionAlloc->Add(Vector(30.0, 20.0, 0.0)); // Node 11 (SOURCE 2)
-
-     
-        mobility.SetPositionAllocator(positionAlloc);
-        mobility.Install(nodes); 
 
     if (m_pcap)
     {
@@ -585,6 +561,7 @@ MeshTest::InstallInternetStack()
 void
 MeshTest::InstallApplication()
 {
+    /*
     // 1. Definir o endereço de grupo Multicast
     // (Pode ser qualquer IP na gama 224.x.x.x a 239.x.x.x)
     Ipv4Address multicastGroup("224.1.2.3");
@@ -628,6 +605,48 @@ MeshTest::InstallApplication()
 
     std::cout << "Multicast: Nó 0 -> Grupo " << multicastGroup
               << " (" << m_totalTime << "s)" << std::endl;
+    */
+
+    Ipv4Address multicastGroup("224.1.2.3");
+    uint16_t port = 9;
+
+    // 1. CONFIGURAR A FONTE (SOURCE) - APENAS O NÓ 0
+    OnOffHelper onoff("ns3::UdpSocketFactory",
+                      Address(InetSocketAddress(multicastGroup, port)));
+    onoff.SetConstantRate(DataRate("500kbps")); 
+    onoff.SetAttribute("PacketSize", UintegerValue(1024));
+
+    ApplicationContainer sourceApps;
+    sourceApps.Add(onoff.Install(nodes.Get(0))); // Apenas o Nó 0 transmite
+    sourceApps.Start(Seconds(1.0)); 
+    sourceApps.Stop(Seconds(m_totalTime));
+
+    // 2. CONFIGURAR OS RECETORES (SINKS) 
+    PacketSinkHelper sink("ns3::UdpSocketFactory",
+                          InetSocketAddress(Ipv4Address::GetAny(), port));
+    
+    ApplicationContainer sinkApps;
+    sinkApps.Add(sink.Install(nodes.Get(2))); // Recetor 1
+    sinkApps.Add(sink.Install(nodes.Get(4))); // Recetor 2
+    
+    sinkApps.Start(Seconds(0.0));
+    sinkApps.Stop(Seconds(m_totalTime));
+
+    std::cout << "Cenário de Teste: Fonte (Nó 0) -> Recetores (Nó 2)" << std::endl;
+
+    // --- REGISTAR NO HWMP ---
+    std::vector<uint32_t> recetores = {2, 4}; 
+    
+    for (uint32_t id : recetores)
+    {
+        Ptr<MeshPointDevice> mpd = meshDevices.Get(id)->GetObject<MeshPointDevice>();
+        Ptr<ns3::dot11s::HwmpProtocol> hwmp = mpd->GetRoutingProtocol()->GetObject<ns3::dot11s::HwmpProtocol>();
+        if (hwmp) {
+            Mac48Address macAddr = Mac48Address::ConvertFrom(mpd->GetAddress());
+            hwmp->SetMulticastGroupNodes(macAddr);
+            std::cout << "-> Nó " << id << " (" << macAddr << ") registado no HWMP como Interessado." << std::endl;
+        }
+    }
 }
 
 int
@@ -641,7 +660,7 @@ MeshTest::Run()
     // LogComponentEnable("MeshWifiInterfaceMac", LOG_LEVEL_ALL);
     // LogComponentEnable("YansWifiPhy", LOG_LEVEL_ALL);
     // LogComponentEnable("PeerManagementProtocol", LOG_LEVEL_ALL);
-     LogComponentEnable("HwmpProtocolMac", LOG_LEVEL_ALL);
+    LogComponentEnable("HwmpProtocolMac", LOG_LEVEL_ALL);
     LogComponentEnable("MeshWifiInterfaceMac", LOG_LEVEL_ALL);
 
     CreateNodes();
@@ -650,33 +669,30 @@ MeshTest::Run()
 
     AnimationInterface anim("mesh1.xml");
 
-    // 2. Pintar TODOS os nós de AZUL (Receptores/Sinks) por defeito
-    // (R=0, G=0, B=255)
-    for (uint32_t i = 0; i < nodes.GetN(); ++i)
-    {
-        anim.UpdateNodeColor (nodes.Get(i), 0, 0, 255); 
-        anim.UpdateNodeDescription (nodes.Get(i), "Receiver"); 
+    // 1. Pintar TODOS os nós de CINZENTO (Não interessados)
+    for (uint32_t i = 0; i < nodes.GetN(); ++i) {
+        anim.UpdateNodeColor (nodes.Get(i), 150, 150, 150); 
+        anim.UpdateNodeDescription (nodes.Get(i), "Relay / Ignora"); 
     }
 
-    // 3. Pintar a SOURCE 1 (Nó 0) de VERMELHO
-    // (R=255, G=0, B=0)
+    // 2. Pintar a FONTE (Nó 0) de VERMELHO
     anim.UpdateNodeColor (nodes.Get(0), 255, 0, 0); 
-    anim.UpdateNodeDescription (nodes.Get(0), "Source A"); 
-    anim.UpdateNodeSize (nodes.Get(0), 1.5, 1.5); // Fica um pouco maior
+    anim.UpdateNodeDescription (nodes.Get(0), "Source"); 
+    anim.UpdateNodeSize (nodes.Get(0), 1.5, 1.5);
 
-    // 4. Pintar a SOURCE 2 (Último Nó) de VERMELHO
-    if (nodes.GetN() > 1) 
-    {
-        uint32_t lastNode = nodes.GetN() - 1;
-        anim.UpdateNodeColor (nodes.Get(lastNode), 255, 0, 0); 
-        anim.UpdateNodeDescription (nodes.Get(lastNode), "Source B");
-        anim.UpdateNodeSize (nodes.Get(lastNode), 1.5, 1.5);
-    }
+    // 3. Pintar os RECETORES (Nós 3 e 4) de AZUL
+    anim.UpdateNodeColor (nodes.Get(2), 0, 0, 255); 
+    anim.UpdateNodeDescription (nodes.Get(2), "Receiver 1");
+    anim.UpdateNodeSize (nodes.Get(2), 1.5, 1.5);
+    
+    anim.UpdateNodeColor (nodes.Get(4), 0, 0, 255); 
+    anim.UpdateNodeDescription (nodes.Get(4), "Receiver 2");
+    anim.UpdateNodeSize (nodes.Get(4), 1.5, 1.5);
 
     FlowMonitorHelper flowmon;
     Ptr<FlowMonitor> monitor = flowmon.InstallAll();
 
-    Simulator::Schedule(Seconds(m_totalTime), &MeshTest::Report, this);
+    //Simulator::Schedule(Seconds(m_totalTime), &MeshTest::Report, this);
     Simulator::Stop(Seconds(m_totalTime + 2));
 
     // Isto diz ao simulador: "Sempre que o PacketSink receber algo (Rx), chama a função ContarPacoteRx"
@@ -703,65 +719,12 @@ MeshTest::Run()
     return 0;
 }
 
-void
-MeshTest::Report()
-{
-    // std::cout << "Relatório da simulação:" << std::endl;
-    /*
-        // Obtém o nó 0 (ou outro nó relevante)
-        Ptr<Node> node = nodes.Get(0);
-
-        // Obtém o dispositivo Mesh associado ao nó
-        Ptr<MeshPointDevice> mpDevice = node->GetDevice(0)->GetObject<MeshPointDevice>();
-        // Obtém o protocolo HWMP de um dos dispositivos mesh
-        // Obtém o protocolo HWMP associado ao dispositivo Mesh
-        Ptr<dot11s::HwmpProtocol> hwmp = mpDevice->GetObject<dot11s::HwmpProtocol>();
-        if (hwmp)
-        {
-            std::cout << "\n=== Estatísticas do HWMP ===\n";
-            // hwmp->Report(std::cout); // Imprime no terminal
-
-            // Grava estatísticas num ficheiro
-            std::ofstream outFile(
-                "/home/mpais/ns-allinone-3.43/ns-3.43/scratch/meshtrace/hwmp_stats.txt");
-            if (outFile.is_open())
-            {
-                hwmp->Report(outFile);
-                outFile.close();
-                std::cout << "Estatísticas do HWMP gravadas em hwmp_stats.txt" << std::endl;
-            }
-            else
-            {
-                std::cerr << "Erro ao abrir hwmp_stats.txt para escrita" << std::endl;
-            }
-        }
-        else
-        {
-            std::cerr << "Erro: Protocolo HWMP não encontrado." << std::endl;
-        } */
-    // unsigned n(0);
-    /* for (auto i = meshDevices.Begin(); i != meshDevices.End(); ++i, ++n)
-    {
-        std::ostringstream os;
-        os << "mp-report-" << n << ".xml";
-        std::cerr << "Printing mesh point device #" << n << " diagnostics to " << os.str() << "\n";
-        std::ofstream of;
-        of.open(os.str().c_str());
-        if (!of.is_open())
-        {
-            std::cerr << "Error: Can't open file " << os.str() << "\n";
-            return;
-        }
-        mesh.Report(*i, of);
-        of.close();
-    } */
-}
-
 int
 main(int argc, char* argv[])
 {
     // Enable packet metadata at the very start
     PacketMetadata::Enable();
+    
     MeshTest t;
     t.Configure(argc, argv);
     return t.Run();
