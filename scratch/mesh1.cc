@@ -454,7 +454,7 @@ MeshTest::Configure(int argc, char* argv[])
 void
 MeshTest::CreateNodes()
 {
-    nodes.Create(6);
+    nodes.Create(4);
     std::cout << "Number of nodes created: " << nodes.GetN() << std::endl;
 
     // Configure YansWifiChannel
@@ -499,12 +499,10 @@ MeshTest::CreateNodes()
     mobility.SetMobilityModel("ns3::ConstantPositionMobilityModel");
     //Posicion
     Ptr<ListPositionAllocator> positionAlloc = CreateObject<ListPositionAllocator>();
-    positionAlloc->Add(Vector(0.0, 0.0, 0.0));  // Nó 0: Source (Início)
-    positionAlloc->Add(Vector(20.0, 0.0, 0.0)); // Nó 1: Relay 
-    positionAlloc->Add(Vector(20.0, 10.0, 0.0)); // Nó 2: Relay (Centro da Árvore)
-    positionAlloc->Add(Vector(40.0, 10.0, 0.0)); // Nó 3: Receiver 1 (Ramo de cima)
-    positionAlloc->Add(Vector(45.0, 15.0, 0.0));  // Nó 4: Receiver 2 (Ramo de baixo)
-    positionAlloc->Add(Vector(30.0, 25.0, 0.0)); // Nó 5: Nó inútil (Ramo morto, vai fazer Prune)
+    positionAlloc->Add(Vector(50.0, 0.0, 0.0));   // Nó 0: Source (Topo)
+    positionAlloc->Add(Vector(50.0, 35.0, 0.0));  // Nó 1: Relay (Centro, a 35m da Fonte)
+    positionAlloc->Add(Vector(20.0, 65.0, 0.0));  // Nó 2: Recetor 1 (Esquerda, a ~42m do Relay)
+    positionAlloc->Add(Vector(80.0, 65.0, 0.0));  // Nó 3: Recetor 2 (Direita, a ~42m do Relay)
     
     mobility.SetPositionAllocator(positionAlloc);
     mobility.Install(nodes);
@@ -627,24 +625,24 @@ MeshTest::InstallApplication()
     
     ApplicationContainer sinkApps;
     sinkApps.Add(sink.Install(nodes.Get(2))); // Recetor 1
-    sinkApps.Add(sink.Install(nodes.Get(4))); // Recetor 2
+    sinkApps.Add(sink.Install(nodes.Get(3))); // Recetor 2
+    
     
     sinkApps.Start(Seconds(0.0));
     sinkApps.Stop(Seconds(m_totalTime));
 
-    std::cout << "Cenário de Teste: Fonte (Nó 0) -> Recetores (Nó 2)" << std::endl;
+    std::cout << "Cenário de Teste: Fonte (Nó 0) -> Recetores (Nós 2 e 3)" << std::endl;
 
     // --- REGISTAR NO HWMP ---
-    std::vector<uint32_t> recetores = {2, 4}; 
+    std::vector<uint32_t> recetores = {2,3}; 
     
     for (uint32_t id : recetores)
     {
         Ptr<MeshPointDevice> mpd = meshDevices.Get(id)->GetObject<MeshPointDevice>();
         Ptr<ns3::dot11s::HwmpProtocol> hwmp = mpd->GetRoutingProtocol()->GetObject<ns3::dot11s::HwmpProtocol>();
         if (hwmp) {
-            Mac48Address macAddr = Mac48Address::ConvertFrom(mpd->GetAddress());
-            hwmp->SetMulticastGroupNodes(macAddr);
-            std::cout << "-> Nó " << id << " (" << macAddr << ") registado no HWMP como Interessado." << std::endl;
+            hwmp->SetMulticastGroupNodes(Mac48Address("01:00:5e:01:02:03"));
+            std::cout << "-> Nó " << id << " registado no HWMP como Interessado no Vídeo." << std::endl;
         }
     }
 }
@@ -675,19 +673,19 @@ MeshTest::Run()
         anim.UpdateNodeDescription (nodes.Get(i), "Relay / Ignora"); 
     }
 
-    // 2. Pintar a FONTE (Nó 0) de VERMELHO
+    // 1. Pintar a FONTE (Nó 0) de VERMELHO
     anim.UpdateNodeColor (nodes.Get(0), 255, 0, 0); 
     anim.UpdateNodeDescription (nodes.Get(0), "Source"); 
     anim.UpdateNodeSize (nodes.Get(0), 1.5, 1.5);
 
-    // 3. Pintar os RECETORES (Nós 3 e 4) de AZUL
+    // 3. Pintar os RECETORES (Nós 2 e 3) de AZUL
     anim.UpdateNodeColor (nodes.Get(2), 0, 0, 255); 
     anim.UpdateNodeDescription (nodes.Get(2), "Receiver 1");
     anim.UpdateNodeSize (nodes.Get(2), 1.5, 1.5);
-    
-    anim.UpdateNodeColor (nodes.Get(4), 0, 0, 255); 
-    anim.UpdateNodeDescription (nodes.Get(4), "Receiver 2");
-    anim.UpdateNodeSize (nodes.Get(4), 1.5, 1.5);
+
+    anim.UpdateNodeColor (nodes.Get(3), 0, 0, 255); 
+    anim.UpdateNodeDescription (nodes.Get(3), "Receiver 2");
+    anim.UpdateNodeSize (nodes.Get(3), 1.5, 1.5);
 
     FlowMonitorHelper flowmon;
     Ptr<FlowMonitor> monitor = flowmon.InstallAll();
