@@ -454,7 +454,7 @@ MeshTest::Configure(int argc, char* argv[])
 void
 MeshTest::CreateNodes()
 {
-    nodes.Create(4);
+    nodes.Create(10);
     std::cout << "Number of nodes created: " << nodes.GetN() << std::endl;
 
     // Configure YansWifiChannel
@@ -499,10 +499,22 @@ MeshTest::CreateNodes()
     mobility.SetMobilityModel("ns3::ConstantPositionMobilityModel");
     //Posicion
     Ptr<ListPositionAllocator> positionAlloc = CreateObject<ListPositionAllocator>();
-    positionAlloc->Add(Vector(50.0, 0.0, 0.0));   // Nó 0: Source (Topo)
-    positionAlloc->Add(Vector(50.0, 35.0, 0.0));  // Nó 1: Relay (Centro, a 35m da Fonte)
-    positionAlloc->Add(Vector(20.0, 65.0, 0.0));  // Nó 2: Recetor 1 (Esquerda, a ~42m do Relay)
-    positionAlloc->Add(Vector(80.0, 65.0, 0.0));  // Nó 3: Recetor 2 (Direita, a ~42m do Relay)
+    positionAlloc->Add(Vector(50.0, 0.0, 0.0));   // Nó 0: Source (Topo Centro)
+    
+    // Relays
+    positionAlloc->Add(Vector(30.0, 35.0, 0.0));  // Nó 1: Relay 1 (Esquerda)
+    positionAlloc->Add(Vector(70.0, 35.0, 0.0));  // Nó 2: Relay 2 (Direita)
+    
+    // Recetores (Querem o vídeo)
+    positionAlloc->Add(Vector(15.0, 70.0, 0.0));  // Nó 3: Recetor 1 (Filho do Relay 1)
+    positionAlloc->Add(Vector(45.0, 70.0, 0.0));  // Nó 4: Recetor 2 (Filho do Relay 1)
+    positionAlloc->Add(Vector(55.0, 70.0, 0.0));  // Nó 5: Recetor 3 (Filho do Relay 2)
+    positionAlloc->Add(Vector(85.0, 70.0, 0.0));  // Nó 6: Recetor 4 (Filho do Relay 2)
+    
+    // Nós a Ignorar (Vão disparar Prune)
+    positionAlloc->Add(Vector(0.0,  35.0, 0.0));  // Nó 7: Inútil (Lateral Esquerda)
+    positionAlloc->Add(Vector(100.0, 35.0, 0.0)); // Nó 8: Inútil (Lateral Direita)
+    positionAlloc->Add(Vector(50.0, 35.0, 0.0));  // Nó 9: Inútil (Centro, ouve a Fonte mas não quer)
     
     mobility.SetPositionAllocator(positionAlloc);
     mobility.Install(nodes);
@@ -624,17 +636,19 @@ MeshTest::InstallApplication()
                           InetSocketAddress(Ipv4Address::GetAny(), port));
     
     ApplicationContainer sinkApps;
-    sinkApps.Add(sink.Install(nodes.Get(2))); // Recetor 1
-    sinkApps.Add(sink.Install(nodes.Get(3))); // Recetor 2
+    sinkApps.Add(sink.Install(nodes.Get(3)));
+    sinkApps.Add(sink.Install(nodes.Get(4)));
+    sinkApps.Add(sink.Install(nodes.Get(5)));
+    sinkApps.Add(sink.Install(nodes.Get(6)));
     
     
     sinkApps.Start(Seconds(0.0));
     sinkApps.Stop(Seconds(m_totalTime));
 
-    std::cout << "Cenário de Teste: Fonte (Nó 0) -> Recetores (Nós 2 e 3)" << std::endl;
+    std::cout << "Cenário de Teste: 1 Fonte -> 2 Relays -> 4 Recetores (3 Nós Inúteis)" << std::endl;
 
     // --- REGISTAR NO HWMP ---
-    std::vector<uint32_t> recetores = {2,3}; 
+    std::vector<uint32_t> recetores = {3, 4, 5, 6}; 
     
     for (uint32_t id : recetores)
     {
@@ -667,25 +681,30 @@ MeshTest::Run()
 
     AnimationInterface anim("mesh1.xml");
 
-    // 1. Pintar TODOS os nós de CINZENTO (Não interessados)
-    for (uint32_t i = 0; i < nodes.GetN(); ++i) {
-        anim.UpdateNodeColor (nodes.Get(i), 150, 150, 150); 
-        anim.UpdateNodeDescription (nodes.Get(i), "Relay / Ignora"); 
-    }
-
     // 1. Pintar a FONTE (Nó 0) de VERMELHO
     anim.UpdateNodeColor (nodes.Get(0), 255, 0, 0); 
     anim.UpdateNodeDescription (nodes.Get(0), "Source"); 
-    anim.UpdateNodeSize (nodes.Get(0), 1.5, 1.5);
+    anim.UpdateNodeSize (nodes.Get(0), 2.0, 2.0);
 
-    // 3. Pintar os RECETORES (Nós 2 e 3) de AZUL
-    anim.UpdateNodeColor (nodes.Get(2), 0, 0, 255); 
-    anim.UpdateNodeDescription (nodes.Get(2), "Receiver 1");
-    anim.UpdateNodeSize (nodes.Get(2), 1.5, 1.5);
+    // 2. Pintar os RELAYS (Nós 1 e 2) de VERDE
+    anim.UpdateNodeColor (nodes.Get(1), 0, 200, 0); 
+    anim.UpdateNodeDescription (nodes.Get(1), "Relay 1"); 
+    anim.UpdateNodeColor (nodes.Get(2), 0, 200, 0); 
+    anim.UpdateNodeDescription (nodes.Get(2), "Relay 2"); 
 
-    anim.UpdateNodeColor (nodes.Get(3), 0, 0, 255); 
-    anim.UpdateNodeDescription (nodes.Get(3), "Receiver 2");
-    anim.UpdateNodeSize (nodes.Get(3), 1.5, 1.5);
+    // 3. Pintar os 4 RECETORES de AZUL
+    for(int i = 3; i <= 6; i++) {
+        anim.UpdateNodeColor (nodes.Get(i), 0, 0, 255); 
+        anim.UpdateNodeDescription (nodes.Get(i), "Receiver");
+        anim.UpdateNodeSize (nodes.Get(i), 1.5, 1.5);
+    }
+
+    // 4. Pintar os NÓS INÚTEIS de PRETO/CINZA ESCURO
+    for(int i = 7; i <= 9; i++) {
+        anim.UpdateNodeColor (nodes.Get(i), 50, 50, 50); 
+        anim.UpdateNodeDescription (nodes.Get(i), "Ignore (Prune)");
+        anim.UpdateNodeSize (nodes.Get(i), 1.0, 1.0);
+    }
 
     FlowMonitorHelper flowmon;
     Ptr<FlowMonitor> monitor = flowmon.InstallAll();
