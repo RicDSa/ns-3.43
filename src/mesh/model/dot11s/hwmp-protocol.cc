@@ -139,11 +139,6 @@ HwmpProtocol::GetTypeId()
                           BooleanValue(true),
                           MakeBooleanAccessor(&HwmpProtocol::m_rfFlag),
                           MakeBooleanChecker())
-            .AddAttribute("EnableFloodAndPrune",
-                          "Ativa ou desativa o mecanismo de Flood-and-Prune.",
-                          BooleanValue(false),
-                          MakeBooleanAccessor(&HwmpProtocol::m_enableFloodAndPrune),
-                          MakeBooleanChecker())
             .AddAttribute("PruneThreshold",
                       "Valor limite para decidir fazer prune (ex: TTL médio).",
                       DoubleValue(5.0),
@@ -165,7 +160,12 @@ HwmpProtocol::GetTypeId()
                            "Maximum random delay time to avoid collisions (Broadcast Storm).",
                            TimeValue (MilliSeconds (10)), // Valor por defeito 10ms
                            MakeTimeAccessor (&HwmpProtocol::m_maxJitter),
-                           MakeTimeChecker ());
+                           MakeTimeChecker ())
+            .AddAttribute("EnableFloodAndPrune",
+                          "Activates or Deactivates the mechanism of Flood-and-Prune.",
+                          BooleanValue(false),
+                          MakeBooleanAccessor(&HwmpProtocol::m_enableFloodAndPrune),
+                          MakeBooleanChecker());
     return tid;
 }
 
@@ -199,7 +199,8 @@ HwmpProtocol::HwmpProtocol()
       m_alpha(0.2),      // new
       m_nodeVarTtl(0.0), // new
       m_pruneTimeout(Seconds(30)),
-      m_device(nullptr) // new
+      m_device(nullptr),
+      m_lastPruneSent(Seconds(0.0)) 
 {
     NS_LOG_FUNCTION(this);
     m_coefficient = CreateObject<UniformRandomVariable>();
@@ -433,11 +434,38 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
 {
     // Verificamos se é um pacote de dados (não de gestão) e se o Prune está ativo
     if (m_enableFloodAndPrune && (source != m_address) && ShouldPrune(constPacket, destination)) 
-{
+    {
       NS_LOG_DEBUG ("PRUNE: Pacote " << constPacket->GetUid() << " bloqueado no nó " << m_address);
       m_pruneEventTrace(Simulator::Now(), m_address, 1);
+      
+      if (Simulator::Now() - m_lastPruneSent > Seconds(3.0)) 
+        {
+            std::vector<std::pair<Mac48Address, uint32_t>> pruneInfo;
+            pruneInfo.push_back(std::make_pair(source, 0)); 
+
+            Mac48Address upstreamNode = Mac48Address::GetBroadcast();
+        
+            // 1. Procura na tabela de routing reativa qual é o próximo salto na direção da Fonte do Vídeo
+            HwmpRtable::LookupResult route = m_rtable->LookupReactive(source);
+            if (route.retransmitter != Mac48Address::GetBroadcast()) {
+                upstreamNode = route.retransmitter; // É este o Nó que nos enviou o tráfego!
+            } else {
+                // 2. Se não houver rota reativa, procura a rota proativa (direção ao Root Node)
+                route = m_rtable->LookupProactive();
+                if (route.retransmitter != Mac48Address::GetBroadcast()) {
+                    upstreamNode = route.retransmitter;
+                }
+            }
+
+            SendPrune(pruneInfo, upstreamNode, sourceIface, destination, source, 1);
+        
+            // Atualiza a hora do último envio
+            m_lastPruneSent = Simulator::Now();
+            NS_LOG_INFO("Nó " << m_address << " enviou mensagem de Prune para a rede.");
+        }      
+
       return false;
-}
+    }
 
     NS_LOG_FUNCTION(this << sourceIface << source << destination << constPacket << protocolType);
     Ptr<Packet> packet = constPacket->Copy();
@@ -785,17 +813,20 @@ HwmpProtocol::ReceivePreq(IePreq preq,
     bool freshInfo(true);
     if (i != m_hwmpSeqnoMetricDatabase.end())
     {
+        // 1. Rejeita pacotes velhos (número de sequência antigo)
         if ((int32_t)(i->second.first - preq.GetOriginatorSeqNumber()) > 0)
         {
             return;
         }
+        
+        // 2. LÓGICA FIRST-TO-ARRIVE 
         if (i->second.first == preq.GetOriginatorSeqNumber())
         {
-            freshInfo = false;
-            if (i->second.second <= preq.GetMetric())
-            {
-                return;
-            }
+            freshInfo = false;   
+            // Como este PREQ tem o mesmo número de sequência do que já temos guardado,
+            // significa que ele chegou EM SEGUNDO LUGAR (ou terceiro, etc).
+            // Portanto, ignoramos imediatamente! O caminho do primeiro PREQ que chegou é o vencedor.
+            return; 
         }
     }
     m_hwmpSeqnoMetricDatabase[preq.GetOriginatorAddress()] =
@@ -970,15 +1001,21 @@ HwmpProtocol::ReceivePrep(IePrep prep,
     auto i = m_hwmpSeqnoMetricDatabase.find(prep.GetOriginatorAddress());
     bool freshInfo(true);
     uint32_t sequence = prep.GetDestinationSeqNumber();
+    
     if (i != m_hwmpSeqnoMetricDatabase.end())
     {
+        // 1. Rejeita respostas velhas
         if ((int32_t)(i->second.first - sequence) > 0)
         {
             return;
         }
+        
+        // 2. LÓGICA FIRST-TO-ARRIVE PARA PREP
         if (i->second.first == sequence)
         {
             freshInfo = false;
+            // Chegou em 2º lugar, por isso ignoramos imediatamente
+            return; 
         }
     }
     m_hwmpSeqnoMetricDatabase[prep.GetOriginatorAddress()] =
@@ -1091,6 +1128,27 @@ HwmpProtocol::ReceivePerr(std::vector<FailedDestination> destinations,
         return;
     }
     ForwardPathError(MakePathError(retval));
+    /*
+    NS_LOG_FUNCTION(this << from << interface << fromMp);
+    // Acceptance cretirea:
+    NS_LOG_DEBUG("I am " << GetAddress() << ", received PERR from " << from);
+    std::vector<FailedDestination> retval;
+    HwmpRtable::LookupResult result;
+    for (unsigned int i = 0; i < destinations.size(); i++)
+    {
+        result = m_rtable->LookupReactiveExpired(destinations[i].destination);
+        if (!((result.retransmitter != from) || (result.ifIndex != interface) ||
+              ((int32_t)(result.seqnum - destinations[i].seqnum) > 0)))
+        {
+            retval.push_back(destinations[i]);
+        }
+    }
+    if (retval.empty())
+    {
+        return;
+    }
+    ForwardPathError(MakePathError(retval));
+    */
 }
 
 // new
@@ -1101,9 +1159,18 @@ HwmpProtocol::ReceivePrune(IePrune prune,
                            uint32_t interface,
                            Mac48Address fromMp)
 {
+    // === Filtrar o Broadcast ===
+    if (prune.GetReceiver() != GetAddress()) {
+        NS_LOG_DEBUG("Prune Broadcast recebido, mas o alvo era " << prune.GetReceiver() << ". Ignorado.");
+        return;
+    }
+
     NS_LOG_FUNCTION(this << from << interface << fromMp);
-    // Acceptance criteria:
-    NS_LOG_DEBUG("I am " << GetAddress() << ", received PRUNE from " << from);
+    
+    // Read the Multicast Group from the Prune packet
+    Mac48Address group = prune.GetGroup();
+
+    NS_LOG_DEBUG("I am " << GetAddress() << ", received PRUNE from " << fromMp << " for Group " << group);
     for (const auto& entry : pruneUnits)
     {
         Mac48Address destination = entry.first;
@@ -1111,7 +1178,7 @@ HwmpProtocol::ReceivePrune(IePrune prune,
 
         NS_LOG_INFO("Received PRUNE for destination " << destination << " with reason " << reason);
 
-        AddPruneEntry(GetAddress(), destination, fromMp);
+        AddPruneEntry(GetAddress(), fromMp, group);
     }
 }
 
@@ -1167,7 +1234,7 @@ HwmpProtocol::SendPrune(std::vector<std::pair<Mac48Address, uint32_t>>& entries,
                          &HwmpProtocolMac::SendPrune, 
                          prune_sender->second, 
                          prune, 
-                         receiver);
+                         Mac48Address::GetBroadcast());
     m_stats.initiatedPrune++;
 }
 
@@ -2000,7 +2067,7 @@ HwmpProtocol::ShouldPrune (Ptr<const Packet> packet, Mac48Address destination)
         
         bool isChildPruned = IsPruned(peer.first, GetAddress(), destination);
 
-        if (peer.second == 0) { // Found one Node bellow   
+        if (!isChildPruned) { // Found one Node bellow   
             hasDownstreamDependents = true;
             break; 
         }
@@ -2015,6 +2082,7 @@ HwmpProtocol::ShouldPrune (Ptr<const Packet> packet, Mac48Address destination)
   // Por defeito, não faz prune
   return false;
 }
+
 
 int64_t
 HwmpProtocol::AssignStreams(int64_t stream)

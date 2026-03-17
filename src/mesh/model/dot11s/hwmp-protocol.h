@@ -224,6 +224,9 @@ class HwmpProtocol : public MeshL2RoutingProtocol
     /// Maximum delay time (Jitter)
     Time m_maxJitter;
 
+    /// Guarda o tempo em que enviámos o último Prune para evitar Broadcast Storms
+    Time m_lastPruneSent;
+
     // NEW NEW CODE
     Ptr<MeshPointDevice> m_device;
 
@@ -236,6 +239,9 @@ class HwmpProtocol : public MeshL2RoutingProtocol
 
     // Memória para guardar os IDs dos pacotes recentes (para detetar duplicados)
     std::vector<uint64_t> m_seenPackets;
+
+    // Lista de vizinhos que nos enviaram um Prune (Blacklist de Multicast)
+    std::set<Mac48Address> m_prunedNeighbors;
 
     // the interval & handle for the periodic event
     Time m_linkCheckInterval;
