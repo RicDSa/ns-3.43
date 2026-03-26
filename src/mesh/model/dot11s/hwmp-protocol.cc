@@ -425,46 +425,97 @@ HwmpProtocol::InvokeRouteReply (RouteReplyCallback cb, bool result, Ptr<Packet> 
   cb(result, packet, src, dst, protocol, interface);
 }
 
-// END NEW CODE
-
 bool
 HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
                             Mac48Address destination, Ptr<const Packet> constPacket,
                             uint16_t protocolType, RouteReplyCallback routeReply)
 {
     // Verificamos se é um pacote de dados (não de gestão) e se o Prune está ativo
-    if (m_enableFloodAndPrune && (source != m_address) && ShouldPrune(constPacket, destination)) 
+    if (m_enableFloodAndPrune && (source != m_address)) 
     {
-      NS_LOG_DEBUG ("PRUNE: Pacote " << constPacket->GetUid() << " bloqueado no nó " << m_address);
-      m_pruneEventTrace(Simulator::Now(), m_address, 1);
-      
-      if (Simulator::Now() - m_lastPruneSent > Seconds(3.0)) 
-        {
-            std::vector<std::pair<Mac48Address, uint32_t>> pruneInfo;
-            pruneInfo.push_back(std::make_pair(source, 0)); 
-
-            Mac48Address upstreamNode = Mac48Address::GetBroadcast();
+bool hasOtherPeers = true; 
+        HwmpTag tag;
+        Mac48Address transmitter = Mac48Address::GetBroadcast();
         
-            // 1. Procura na tabela de routing reativa qual é o próximo salto na direção da Fonte do Vídeo
-            HwmpRtable::LookupResult route = m_rtable->LookupReactive(source);
-            if (route.retransmitter != Mac48Address::GetBroadcast()) {
-                upstreamNode = route.retransmitter; // É este o Nó que nos enviou o tráfego!
-            } else {
-                // 2. Se não houver rota reativa, procura a rota proativa (direção ao Root Node)
-                route = m_rtable->LookupProactive();
-                if (route.retransmitter != Mac48Address::GetBroadcast()) {
-                    upstreamNode = route.retransmitter;
+        // Descobre quem nos enviou fisicamente este pacote e conta os outros vizinhos
+        if (constPacket->PeekPacketTag(tag)) {
+            transmitter = tag.GetAddress();
+            hasOtherPeers = false; 
+            for (const auto& peer : m_lastActivePeerAddrs) {
+                if (peer.first != transmitter) {
+                    hasOtherPeers = true;
+                    break;
                 }
             }
+        }
 
-            SendPrune(pruneInfo, upstreamNode, sourceIface, destination, source, 1);
-        
-            // Atualiza a hora do último envio
-            m_lastPruneSent = Simulator::Now();
-            NS_LOG_INFO("Nó " << m_address << " enviou mensagem de Prune para a rede.");
-        }      
+        bool amInterested = (m_multicastGroupNodes.find(destination) != m_multicastGroupNodes.end());
 
-      return false;
+        //Detetar se o pacote é um DUPLICADO (veio pelo caminho mais lento!)
+        bool isDuplicate = false;
+        for (auto it = m_seenPackets.begin(); it != m_seenPackets.end(); ++it) {
+            if (*it == constPacket->GetUid()) {
+                isDuplicate = true;
+                break;
+            }
+        }
+
+        // CONDIÇÃO MESTRE
+        if (ShouldPrune(constPacket, destination) || !hasOtherPeers) 
+        {
+            // PODAMOS PELO AR SE: (1) Não queremos o vídeo OU (2) Recebemos um pacote repetido
+            if (!amInterested || isDuplicate) 
+            {
+                NS_LOG_DEBUG ("PRUNE Ativado no nó " << m_address << ". Motivo: " << (isDuplicate ? "Duplicado!" : "Folha Morta!"));
+                
+                // Os Prunes de duplicados não respeitam o limite de 3 segundos, disparam logo!
+                if (Simulator::Now() - m_lastPruneSent > Seconds(3.0) || isDuplicate) 
+                {
+                    std::vector<std::pair<Mac48Address, uint32_t>> pruneInfo;
+                    pruneInfo.push_back(std::make_pair(source, 0)); 
+                    Mac48Address targetNode = Mac48Address::GetBroadcast();
+                
+                    if (isDuplicate) {
+                        //O Prune vai em Unicast direto para o nó atrasado!
+                        targetNode = transmitter;
+                        NS_LOG_INFO("Recetor " << m_address << " enviou Prune para cortar o caminho lento de " << targetNode);
+                    } else {
+                        // LÓGICA NORMAL DE FOLHA MORTA: Procura o Pai (Valor 1)
+                        bool foundParent = false;
+                        for (const auto& peer : m_lastActivePeerAddrs) {
+                            if (peer.second == 1) { 
+                                targetNode = peer.first;
+                                foundParent = true;
+                                break;
+                            }
+                        }
+                        if (!foundParent) {
+                            HwmpRtable::LookupResult route = m_rtable->LookupReactive(source);
+                            if (route.retransmitter != Mac48Address::GetBroadcast()) {
+                                targetNode = route.retransmitter;
+                            } else {
+                                route = m_rtable->LookupProactive();
+                                if (route.retransmitter != Mac48Address::GetBroadcast()) {
+                                    targetNode = route.retransmitter;
+                                }
+                            }
+                        }
+                    }
+
+                    SendPrune(pruneInfo, targetNode, sourceIface, destination, source, 1);
+                    
+                    if (!isDuplicate) {
+                        m_lastPruneSent = Simulator::Now();
+                    }
+                }
+            }     
+            else if (amInterested && !hasOtherPeers)
+            {
+                NS_LOG_DEBUG ("RECETOR INTELIGENTE: Consumi o pacote mas NÃO o retransmiti para o ar!");
+            }    
+
+            return false; // Deita a cópia de retransmissão para o lixo
+        }
     }
 
     NS_LOG_FUNCTION(this << sourceIface << source << destination << constPacket << protocolType);
@@ -1208,7 +1259,7 @@ HwmpProtocol::SendPrep(Mac48Address src,
     m_stats.initiatedPrep++;
 }
 
-// New
+// Função para enviar o Prune (Unicast)
 void
 HwmpProtocol::SendPrune(std::vector<std::pair<Mac48Address, uint32_t>>& entries,
                         Mac48Address receiver,
@@ -1221,20 +1272,23 @@ HwmpProtocol::SendPrune(std::vector<std::pair<Mac48Address, uint32_t>>& entries,
     NS_LOG_DEBUG("I am " << GetAddress());
     IePrune prune;
     prune.SetEntries(entries);
-    prune.SetReceiver(receiver);
+    prune.SetReceiver(receiver); 
     prune.SetInterface(interface);
     prune.SetTtl(ttl);
     prune.SetGroup(multicastGroup);
     prune.SetOriginator(originator);
+    
     auto prune_sender = m_interfaces.find(interface);
     NS_ASSERT(prune_sender != m_interfaces.end());
+    
     Time delay = MicroSeconds (m_jitter->GetValue (0, m_maxJitter.GetMicroSeconds ()));
     
     Simulator::Schedule (delay, 
                          &HwmpProtocolMac::SendPrune, 
                          prune_sender->second, 
                          prune, 
-                         Mac48Address::GetBroadcast());
+                         receiver); 
+                         
     m_stats.initiatedPrune++;
 }
 
@@ -2057,7 +2111,7 @@ HwmpProtocol::ShouldPrune (Ptr<const Packet> packet, Mac48Address destination)
     packet->PeekPacketTag(tag);
 
     bool amInterested = false;
-    if (m_multicastGroupNodes.find(GetAddress()) != m_multicastGroupNodes.end()) {
+    if (m_multicastGroupNodes.find(destination) != m_multicastGroupNodes.end()) {
         amInterested = true;
     }
 
@@ -2065,17 +2119,20 @@ HwmpProtocol::ShouldPrune (Ptr<const Packet> packet, Mac48Address destination)
 
     for (auto const& peer : m_lastActivePeerAddrs) {
         
-        bool isChildPruned = IsPruned(peer.first, GetAddress(), destination);
+        // Aceita nós ABAIXO (0) e NÓS AO MESMO NÍVEL (2)
+        if (peer.second == 0 || peer.second == 2) { 
+            
+            bool isChildPruned = IsPruned(peer.first, GetAddress(), destination);
 
-        if (!isChildPruned) { // Found one Node bellow   
-            hasDownstreamDependents = true;
-            break; 
+            if (!isChildPruned) { // Encontrámos um nó abaixo que não desistiu do vídeo! 
+                hasDownstreamDependents = true;
+                break; 
+            }
         }
     }
 
     if (!amInterested && !hasDownstreamDependents) {
         NS_LOG_DEBUG ("ShouldPrune: The Node " << GetAddress() << " is a dead leaf. Blocking the packet.");
-        
         return true; 
     }
 
