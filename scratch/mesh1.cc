@@ -71,6 +71,7 @@
 
 #include "ns3/applications-module.h"
 #include "ns3/flow-monitor-module.h"
+#include "ns3/flow-monitor-helper.h"
 #include "ns3/core-module.h"
 #include "ns3/internet-module.h"
 #include "ns3/ipv4-global-routing-helper.h"
@@ -107,7 +108,7 @@ uint32_t g_RxCount = 0;                                //!< Tx packet counter.
 Ipv4Address multicastGroup = Ipv4Address("225.1.2.5"); // Multicast group address
 uint16_t multicastPort = 8080;                         // Multicast port
 // List of nodes in the multicast group
-std::set<uint32_t> multicastGroupNodes = {1, 3, 5, 7};
+std::set<uint32_t> multicastGroupNodes = {5};
 
 // Global set to track received packet IDs
 std::set<uint32_t> receivedPacketIds;
@@ -118,8 +119,13 @@ void
 ContarPacoteRx (std::string context, Ptr<const Packet> packet, const Address &from)
 {
     g_multicastRxCount++;
-    // Se quiser ver no terminal cada pacote a chegar, descomente a linha abaixo:
-    // std::cout << "DEBUG: Pacote recebido! Total: " << g_multicastRxCount << std::endl;
+}
+
+//Function for a new node to appear in the middle of the simulation
+void TeleportNode(Ptr<Node> node, Vector position) {
+    Ptr<MobilityModel> mobility = node->GetObject<MobilityModel>();
+    mobility->SetPosition(position);
+    std::cout << "\n>>> THE NODE " << node->GetId() << " ARRIVED IN THE NETWORK AT " << Simulator::Now().GetSeconds() << " SECONDS! <<<\n" << std::endl;
 }
 
 void
@@ -148,12 +154,6 @@ SendMulticastPacket(Ptr<Socket> socket,
         std::cout << "Packet send failed. Sent " << bytesSent << " out of " << packetSize
                   << " bytes" << std::endl;
     }
-    /* Simulator::Schedule(Seconds(1.0),
-                        &SendMulticastPacket,
-                        socket,
-                        packetSize,
-                        multicastGroup,
-                        remote); */
     g_TxCount++;
 }
 
@@ -404,7 +404,7 @@ MeshTest::MeshTest()
       m_ySize(2),
       m_step(50.0),
       m_randomStart(0.1),
-      m_totalTime(10.0),
+      m_totalTime(80.0),
       m_packetInterval(1),
       m_packetSize(1024),
       m_nIfaces(1),
@@ -454,7 +454,7 @@ MeshTest::Configure(int argc, char* argv[])
 void
 MeshTest::CreateNodes()
 {
-    nodes.Create(10);
+    nodes.Create(6);
     std::cout << "Number of nodes created: " << nodes.GetN() << std::endl;
 
     // Configure YansWifiChannel
@@ -499,22 +499,18 @@ MeshTest::CreateNodes()
     mobility.SetMobilityModel("ns3::ConstantPositionMobilityModel");
     //Posicion
     Ptr<ListPositionAllocator> positionAlloc = CreateObject<ListPositionAllocator>();
-    positionAlloc->Add(Vector(50.0, 0.0, 0.0));   // Nó 0: Source (Topo Centro)
+    positionAlloc->Add(Vector(50.0, 0.0, 0.0));  // Índice 0: Nó 0 (Fonte)
+    positionAlloc->Add(Vector(50.0, 30.0, 0.0)); // Índice 1: Nó 1 (Relay Central)
     
-    // Relays
-    positionAlloc->Add(Vector(30.0, 35.0, 0.0));  // Nó 1: Relay 1 (Esquerda)
-    positionAlloc->Add(Vector(70.0, 35.0, 0.0));  // Nó 2: Relay 2 (Direita)
+    // Os dois Relés (Esquerdo e Direito)
+    positionAlloc->Add(Vector(20.0, 60.0, 0.0)); // Índice 2: Nó 2 (Relay Esquerdo)
+    positionAlloc->Add(Vector(80.0, 60.0, 0.0)); // Índice 3: Nó 3 (Relay Direito)
     
-    // Recetores (Querem o vídeo)
-    positionAlloc->Add(Vector(15.0, 70.0, 0.0));  // Nó 3: Recetor 1 (Filho do Relay 1)
-    positionAlloc->Add(Vector(45.0, 70.0, 0.0));  // Nó 4: Recetor 2 (Filho do Relay 1)
-    positionAlloc->Add(Vector(55.0, 70.0, 0.0));  // Nó 5: Recetor 3 (Filho do Relay 2)
-    positionAlloc->Add(Vector(85.0, 70.0, 0.0));  // Nó 6: Recetor 4 (Filho do Relay 2)
+    // Recetores
+    positionAlloc->Add(Vector(150.0, 150.0, 0.0)); // Índice 4: Nó 4 começa fora de alcance (1km)
     
-    // Nós a Ignorar (Vão disparar Prune)
-    positionAlloc->Add(Vector(0.0,  35.0, 0.0));  // Nó 7: Inútil (Lateral Esquerda)
-    positionAlloc->Add(Vector(100.0, 35.0, 0.0)); // Nó 8: Inútil (Lateral Direita)
-    positionAlloc->Add(Vector(50.0, 35.0, 0.0));  // Nó 9: Inútil (Centro, ouve a Fonte mas não quer)
+    //Nó 5 vai para o centro exato!
+    positionAlloc->Add(Vector(150.0, 190.0, 0.0)); // Índice 5: Nó 5 (Recetor Mestre)
     
     mobility.SetPositionAllocator(positionAlloc);
     mobility.Install(nodes);
@@ -571,51 +567,6 @@ MeshTest::InstallInternetStack()
 void
 MeshTest::InstallApplication()
 {
-    /*
-    // 1. Definir o endereço de grupo Multicast
-    // (Pode ser qualquer IP na gama 224.x.x.x a 239.x.x.x)
-    Ipv4Address multicastGroup("224.1.2.3");
-    uint16_t port = 9;
-
-    // 2. Configurar o RECETOR (Sink) em TODOS os nós
-    // Isto garante que todos os nós estão à escuta.
-    // Assim podemos ver até onde o pacote chega antes de ser "podado".
-    PacketSinkHelper sink("ns3::UdpSocketFactory",
-                          InetSocketAddress(Ipv4Address::GetAny(), port));
-
-    ApplicationContainer sinkApps = sink.Install(nodes);
-    sinkApps.Start(Seconds(0.0));
-    sinkApps.Stop(Seconds(m_totalTime));
-
-    // 3. Configurar o EMISSOR (Source) - Nó 0
-    // Usamos OnOffHelper para simular um fluxo de vídeo ou dados constante.
-    OnOffHelper onoff("ns3::UdpSocketFactory",
-                      Address(InetSocketAddress(multicastGroup, port)));
-
-    onoff.SetConstantRate(DataRate("500kbps")); // Ajuste a velocidade aqui (ex: 1Mbps)
-    onoff.SetAttribute("PacketSize", UintegerValue(1024));
-
-    ApplicationContainer sourceApps;
-
-    // Instalar a fonte no Nó 0
-    sourceApps.Add(onoff.Install(nodes.Get(0)));
-
-    // Se quiser adicionar mais fontes (ex: Nó 1 também envia), descomente:
-    // sourceApps.Add(onoff.Install(nodes.Get(1)));
-    // Last node is the 2 source
-    if (nodes.GetN() >= 2) {
-        // Se tivermos nós suficientes, metemos o último nó como fonte também
-        uint32_t lastNodeIndex = nodes.GetN() - 1; 
-        sourceApps.Add(onoff.Install(nodes.Get(lastNodeIndex)));
-        std::cout << "Source 2 configurada no Nó " << lastNodeIndex << std::endl;
-    }
-
-    sourceApps.Start(Seconds(1.0)); // Começa a enviar ao fim de 1 segundo
-    sourceApps.Stop(Seconds(m_totalTime));
-
-    std::cout << "Multicast: Nó 0 -> Grupo " << multicastGroup
-              << " (" << m_totalTime << "s)" << std::endl;
-    */
 
     Ipv4Address multicastGroup("224.1.2.3");
     uint16_t port = 9;
@@ -636,27 +587,22 @@ MeshTest::InstallApplication()
                           InetSocketAddress(Ipv4Address::GetAny(), port));
     
     ApplicationContainer sinkApps;
-    sinkApps.Add(sink.Install(nodes.Get(3)));
-    sinkApps.Add(sink.Install(nodes.Get(4)));
     sinkApps.Add(sink.Install(nodes.Get(5)));
-    sinkApps.Add(sink.Install(nodes.Get(6)));
-    
     
     sinkApps.Start(Seconds(0.0));
     sinkApps.Stop(Seconds(m_totalTime));
 
-    std::cout << "Cenário de Teste: 1 Fonte -> 2 Relays -> 4 Recetores (3 Nós Inúteis)" << std::endl;
+    std::cout << "Cenário de Teste: Poda em Cascata (Ramo Morto)" << std::endl;
 
     // --- REGISTAR NO HWMP ---
-    std::vector<uint32_t> recetores = {3, 4, 5, 6}; 
+    std::vector<uint32_t> recetores = {5}; 
     
     for (uint32_t id : recetores)
     {
         Ptr<MeshPointDevice> mpd = meshDevices.Get(id)->GetObject<MeshPointDevice>();
         Ptr<ns3::dot11s::HwmpProtocol> hwmp = mpd->GetRoutingProtocol()->GetObject<ns3::dot11s::HwmpProtocol>();
         if (hwmp) {
-            hwmp->SetMulticastGroupNodes(Mac48Address("01:00:5e:01:02:03"));
-            std::cout << "-> Nó " << id << " registado no HWMP como Interessado no Vídeo." << std::endl;
+            hwmp->SetMulticastGroupNodes(Mac48Address::ConvertFrom(mpd->GetAddress()));
         }
     }
 }
@@ -680,31 +626,26 @@ MeshTest::Run()
     InstallApplication();
 
     AnimationInterface anim("mesh1.xml");
+    anim.EnablePacketMetadata(true); 
+    anim.EnableWifiMacCounters(Seconds(0), Seconds(m_totalTime));
 
-    // 1. Pintar a FONTE (Nó 0) de VERMELHO
+    // Nó 0 e 1: Fonte e Central (Vermelho e Verde)
     anim.UpdateNodeColor (nodes.Get(0), 255, 0, 0); 
-    anim.UpdateNodeDescription (nodes.Get(0), "Source"); 
-    anim.UpdateNodeSize (nodes.Get(0), 2.0, 2.0);
+    anim.UpdateNodeDescription (nodes.Get(0), "Fonte"); 
+    anim.UpdateNodeColor (nodes.Get(1), 0, 255, 0); 
+    anim.UpdateNodeDescription (nodes.Get(1), "Relay Central"); 
 
-    // 2. Pintar os RELAYS (Nós 1 e 2) de VERDE
-    anim.UpdateNodeColor (nodes.Get(1), 0, 200, 0); 
-    anim.UpdateNodeDescription (nodes.Get(1), "Relay 1"); 
-    anim.UpdateNodeColor (nodes.Get(2), 0, 200, 0); 
-    anim.UpdateNodeDescription (nodes.Get(2), "Relay 2"); 
+    // Nós 2 e 4: Ramo Ativo (Azul)
+    anim.UpdateNodeColor (nodes.Get(2), 0, 0, 255); 
+    anim.UpdateNodeDescription (nodes.Get(2), "Relay Esq (Ativo)"); 
+    anim.UpdateNodeColor (nodes.Get(4), 50, 50, 50); 
+    anim.UpdateNodeDescription (nodes.Get(4), "Ignora Video"); 
 
-    // 3. Pintar os 4 RECETORES de AZUL
-    for(int i = 3; i <= 6; i++) {
-        anim.UpdateNodeColor (nodes.Get(i), 0, 0, 255); 
-        anim.UpdateNodeDescription (nodes.Get(i), "Receiver");
-        anim.UpdateNodeSize (nodes.Get(i), 1.5, 1.5);
-    }
-
-    // 4. Pintar os NÓS INÚTEIS de PRETO/CINZA ESCURO
-    for(int i = 7; i <= 9; i++) {
-        anim.UpdateNodeColor (nodes.Get(i), 50, 50, 50); 
-        anim.UpdateNodeDescription (nodes.Get(i), "Ignore (Prune)");
-        anim.UpdateNodeSize (nodes.Get(i), 1.0, 1.0);
-    }
+    // Nós 3 e 5: Ramo Morto (Preto/Cinzento)
+    anim.UpdateNodeColor (nodes.Get(3), 100, 100, 100); 
+    anim.UpdateNodeDescription (nodes.Get(3), "Relay Dir (Morto)"); 
+    anim.UpdateNodeColor (nodes.Get(5), 0, 0, 255); 
+    anim.UpdateNodeDescription (nodes.Get(5), "Recetor");
 
     FlowMonitorHelper flowmon;
     Ptr<FlowMonitor> monitor = flowmon.InstallAll();
@@ -716,12 +657,22 @@ MeshTest::Run()
     Config::Connect ("/NodeList/*/ApplicationList/*/$ns3::PacketSink/Rx", 
                      MakeCallback (&ContarPacoteRx));
 
-    // PrintAllHwmpMetrics();
+    Simulator::Schedule(Seconds(15.0), &TeleportNode, nodes.Get(4), Vector(20.0, 90.0, 0.0)); // Node 4 appears in the network
+    Simulator::Schedule(Seconds(15.0), &TeleportNode, nodes.Get(5), Vector(50.0, 90.0, 0.0)); // Node 4 appears in the network
 
     Simulator::Run();
     // PrintEstablishedPeers();
     //   CheckPeerings();
     monitor->CheckForLostPackets();
+    Ptr<Ipv4FlowClassifier> classifier = DynamicCast<Ipv4FlowClassifier>(flowmon.GetClassifier());
+    std::map<FlowId, FlowMonitor::FlowStats> stats = monitor->GetFlowStats();
+    for (std::map<FlowId, FlowMonitor::FlowStats>::const_iterator i = stats.begin(); i != stats.end(); ++i) {
+        std::cout << "Fluxo " << i->first << " (" << classifier->FindFlow(i->first).sourceAddress << " -> " << classifier->FindFlow(i->first).destinationAddress << ")\n";
+        std::cout << "  Pacotes Transmitidos: " << i->second.txPackets << "\n";
+        std::cout << "  Pacotes Recebidos: " << i->second.rxPackets << "\n";
+        std::cout << "  Atraso Médio: " << i->second.delaySum.GetSeconds() / i->second.rxPackets << " s\n";
+        std::cout << "  Throughput: " << i->second.rxBytes * 8.0 / (i->second.timeLastRxPacket.GetSeconds() - i->second.timeFirstTxPacket.GetSeconds()) / 1024 / 1024  << " Mbps\n";
+    }
     monitor->SerializeToXmlFile("resultados_multicast.xml", true, true);
 
     std::cout << "\n##################################################" << std::endl;
