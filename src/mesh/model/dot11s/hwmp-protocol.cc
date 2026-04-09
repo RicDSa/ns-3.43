@@ -287,7 +287,7 @@ HwmpProtocol::PeerLinks()
         Mac48Address peer = link->GetPeerAddress();
         if (m_lastActivePeerAddrs.find(peer) == m_lastActivePeerAddrs.end())
         {
-            m_lastActivePeerAddrs[peer] = 3;
+            m_lastActivePeerAddrs[peer] = 0;
         }
     }
 
