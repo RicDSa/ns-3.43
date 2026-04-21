@@ -506,10 +506,10 @@ MeshTest::CreateNodes()
     positionAlloc->Add(Vector(20.0, 60.0, 0.0)); // Índice 2: Nó 2 (Relay Esquerdo)
     positionAlloc->Add(Vector(80.0, 60.0, 0.0)); // Índice 3: Nó 3 (Relay Direito)
     
-    // Recetores
-    positionAlloc->Add(Vector(150.0, 150.0, 0.0)); // Índice 4: Nó 4 começa fora de alcance (1km)
+    // Nó ignora
+    positionAlloc->Add(Vector(50.0, 90.0, 0.0)); // Índice 4: Nó 4 começa fora de alcance (1km)
     
-    //Nó 5 vai para o centro exato!
+    //Recetor!
     positionAlloc->Add(Vector(150.0, 190.0, 0.0)); // Índice 5: Nó 5 (Recetor Mestre)
     
     mobility.SetPositionAllocator(positionAlloc);
@@ -624,6 +624,25 @@ MeshTest::Run()
     CreateNodes();
     InstallInternetStack();
     InstallApplication();
+    
+    // =====================================================================
+    // CONFIGURAÇÃO ESPECÍFICA: APLICAR "CONTROLLED FLOODING" APENAS AO NÓ 4
+    // =====================================================================
+    Ptr<Node> node4 = nodes.Get(4);
+    for (uint32_t i = 0; i < node4->GetNDevices(); ++i) 
+    {
+        Ptr<MeshPointDevice> mpd = DynamicCast<MeshPointDevice>(node4->GetDevice(i));
+        if (mpd) 
+        {
+            Ptr<ns3::dot11s::HwmpProtocol> hwmp = mpd->GetRoutingProtocol()->GetObject<ns3::dot11s::HwmpProtocol>();
+            if (hwmp) 
+            {
+                // Desliga o Flood-and-Prune APENAS para este nó
+                hwmp->SetAttribute("EnableFloodAndPrune", BooleanValue(false));
+                std::cout << "\n[CONFIG] -> No 4 configurado para Controlled Flooding (Flood-and-Prune OFF)\n" << std::endl;
+            }
+        }
+    }
 
     AnimationInterface anim("mesh1.xml");
     anim.EnablePacketMetadata(true); 
@@ -657,8 +676,7 @@ MeshTest::Run()
     Config::Connect ("/NodeList/*/ApplicationList/*/$ns3::PacketSink/Rx", 
                      MakeCallback (&ContarPacoteRx));
 
-    Simulator::Schedule(Seconds(15.0), &TeleportNode, nodes.Get(4), Vector(20.0, 90.0, 0.0)); // Node 4 appears in the network
-    Simulator::Schedule(Seconds(15.0), &TeleportNode, nodes.Get(5), Vector(50.0, 90.0, 0.0)); // Node 4 appears in the network
+    Simulator::Schedule(Seconds(15.0), &TeleportNode, nodes.Get(5), Vector(50.0, 120.0, 0.0)); // Node 5 appears in the network
 
     Simulator::Run();
     // PrintEstablishedPeers();
