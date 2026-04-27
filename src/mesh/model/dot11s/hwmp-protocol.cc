@@ -433,7 +433,7 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
     // Verificamos se é um pacote de dados (não de gestão) e se o Prune está ativo
     if (m_enableFloodAndPrune && (source != m_address)) 
     {
-bool hasOtherPeers = true; 
+        bool hasOtherPeers = true; 
         HwmpTag tag;
         Mac48Address transmitter = Mac48Address::GetBroadcast();
         
@@ -1281,9 +1281,9 @@ HwmpProtocol::SendPrune(std::vector<std::pair<Mac48Address, uint32_t>>& entries,
     auto prune_sender = m_interfaces.find(interface);
     NS_ASSERT(prune_sender != m_interfaces.end());
     
-    Time delay = MicroSeconds (m_jitter->GetValue (0, m_maxJitter.GetMicroSeconds ()));
+    //Time delay = MicroSeconds (m_jitter->GetValue (0, m_maxJitter.GetMicroSeconds ()));
     
-    Simulator::Schedule (delay, 
+    Simulator::Schedule (Seconds(0.002),
                          &HwmpProtocolMac::SendPrune, 
                          prune_sender->second, 
                          prune, 
