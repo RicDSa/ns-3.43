@@ -298,6 +298,19 @@ class HwmpProtocol : public MeshL2RoutingProtocol
 
     void DoInitialize() override;
 
+    // --- Structure for Implicit ACK ---
+    struct PendingAck {
+        Ptr<Packet> packet;
+        EventId retransmitEvent;
+        uint8_t retries;
+        Mac48Address destination;
+    };
+
+    // Mapa: UID do pacote -> Dados da retransmissão
+    std::map<uint64_t, PendingAck> m_pendingAcks;
+
+    void Retransmit(uint64_t uid, RouteReplyCallback cb, Mac48Address src, Mac48Address dst, uint16_t protocol, uint32_t interface);
+
     /**
      * \brief Structure of path error: IePerr and list of receivers:
      * interfaces and MAC address

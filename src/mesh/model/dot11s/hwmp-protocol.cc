@@ -200,7 +200,8 @@ HwmpProtocol::HwmpProtocol()
       m_nodeVarTtl(0.0), // new
       m_pruneTimeout(Seconds(30)),
       m_device(nullptr),
-      m_lastPruneSent(Seconds(0.0)) 
+      m_lastPruneSent(Seconds(0.0)),
+      m_RxPacketCount(0)
 {
     NS_LOG_FUNCTION(this);
     m_coefficient = CreateObject<UniformRandomVariable>();
@@ -430,91 +431,107 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
                             Mac48Address destination, Ptr<const Packet> constPacket,
                             uint16_t protocolType, RouteReplyCallback routeReply)
 {
-    // Verificamos se é um pacote de dados (não de gestão) e se o Prune está ativo
-    if (m_enableFloodAndPrune && (source != m_address)) 
+    m_RxPacketCount++;
+    if (m_RxPacketCount <= 5) 
     {
-        bool hasOtherPeers = true; 
-        HwmpTag tag;
-        Mac48Address transmitter = Mac48Address::GetBroadcast();
-        
-        // Descobre quem nos enviou fisicamente este pacote e conta os outros vizinhos
-        if (constPacket->PeekPacketTag(tag)) {
-            transmitter = tag.GetAddress();
-            hasOtherPeers = false; 
-            for (const auto& peer : m_lastActivePeerAddrs) {
-                if (peer.first != transmitter) {
-                    hasOtherPeers = true;
+        NS_LOG_DEBUG("Warm-up: Ignorando lógica de pruning para os primeiros 5 pacotes.");
+        // Deixa o código seguir para a lógica normal de encaminhamento do HWMP abaixo
+    }
+    else{
+        // Verificamos se é um pacote de dados (não de gestão) e se o Prune está ativo
+        if (m_enableFloodAndPrune && (source != m_address)) 
+        {
+            bool hasOtherPeers = true; 
+            HwmpTag tag;
+            Mac48Address transmitter = Mac48Address::GetBroadcast();
+            
+            // Descobre quem nos enviou fisicamente este pacote e conta os outros vizinhos
+            if (constPacket->PeekPacketTag(tag)) {
+                transmitter = tag.GetAddress();
+                hasOtherPeers = false; 
+                for (const auto& peer : m_lastActivePeerAddrs) {
+                    if (peer.first != transmitter) {
+                        hasOtherPeers = true;
+                        break;
+                    }
+                }
+            }
+
+            bool amInterested = (m_multicastGroupNodes.find(destination) != m_multicastGroupNodes.end());
+
+            //Detetar se o pacote é um DUPLICADO (veio pelo caminho mais lento!)
+            bool isDuplicate = false;
+            for (auto it = m_seenPackets.begin(); it != m_seenPackets.end(); ++it) {
+                if (*it == constPacket->GetUid()) {
+                    isDuplicate = true;
+
+                    uint64_t uid = constPacket->GetUid();
+                    if (m_pendingAcks.count(uid)) {
+                        NS_LOG_DEBUG("Implicit ACK detetado para o pacote " << uid << ". Cancelando retransmissão.");
+                        Simulator::Cancel(m_pendingAcks[uid].retransmitEvent);
+                        m_pendingAcks.erase(uid);
+                    }
+
                     break;
                 }
             }
-        }
 
-        bool amInterested = (m_multicastGroupNodes.find(destination) != m_multicastGroupNodes.end());
-
-        //Detetar se o pacote é um DUPLICADO (veio pelo caminho mais lento!)
-        bool isDuplicate = false;
-        for (auto it = m_seenPackets.begin(); it != m_seenPackets.end(); ++it) {
-            if (*it == constPacket->GetUid()) {
-                isDuplicate = true;
-                break;
-            }
-        }
-
-        // CONDIÇÃO MESTRE
-        if (ShouldPrune(constPacket, destination) || !hasOtherPeers) 
-        {
-            // PODAMOS PELO AR SE: (1) Não queremos o vídeo OU (2) Recebemos um pacote repetido
-            if (!amInterested || isDuplicate) 
+            // CONDIÇÃO MESTRE
+            if (ShouldPrune(constPacket, destination) || !hasOtherPeers) 
             {
-                NS_LOG_DEBUG ("PRUNE Ativado no nó " << m_address << ". Motivo: " << (isDuplicate ? "Duplicado!" : "Folha Morta!"));
-                
-                // Os Prunes de duplicados não respeitam o limite de 3 segundos, disparam logo!
-                if (Simulator::Now() - m_lastPruneSent > Seconds(3.0) || isDuplicate) 
+                // PODAMOS PELO AR SE: (1) Não queremos o vídeo OU (2) Recebemos um pacote repetido
+                if (!amInterested || isDuplicate) 
                 {
-                    std::vector<std::pair<Mac48Address, uint32_t>> pruneInfo;
-                    pruneInfo.push_back(std::make_pair(source, 0)); 
-                    Mac48Address targetNode = Mac48Address::GetBroadcast();
-                
-                    if (isDuplicate) {
-                        //O Prune vai em Unicast direto para o nó atrasado!
-                        targetNode = transmitter;
-                        NS_LOG_INFO("Recetor " << m_address << " enviou Prune para cortar o caminho lento de " << targetNode);
-                    } else {
-                        // LÓGICA NORMAL DE FOLHA MORTA: Procura o Pai (Valor 1)
-                        bool foundParent = false;
-                        for (const auto& peer : m_lastActivePeerAddrs) {
-                            if (peer.second == 1) { 
-                                targetNode = peer.first;
-                                foundParent = true;
-                                break;
+                    NS_LOG_DEBUG ("PRUNE Ativado no nó " << m_address << ". Motivo: " << (isDuplicate ? "Duplicado!" : "Folha Morta!"));
+                    
+                    // Os Prunes de duplicados não respeitam o limite de 3 segundos, disparam logo!
+                    if (Simulator::Now() - m_lastPruneSent > Seconds(3.0) || isDuplicate) 
+                    {
+                        std::vector<std::pair<Mac48Address, uint32_t>> pruneInfo;
+                        pruneInfo.push_back(std::make_pair(source, 0)); 
+                        Mac48Address targetNode = Mac48Address::GetBroadcast();
+                    
+                        if (isDuplicate) {
+                            //O Prune vai em Unicast direto para o nó atrasado!
+                            targetNode = transmitter;
+                            NS_LOG_INFO("Recetor " << m_address << " enviou Prune para cortar o caminho lento de " << targetNode);
+                        } else {
+                            // LÓGICA NORMAL DE FOLHA MORTA: Procura o Pai (Valor 1)
+                            bool foundParent = false;
+                            for (const auto& peer : m_lastActivePeerAddrs) {
+                                if (peer.second == 1) { 
+                                    targetNode = peer.first;
+                                    foundParent = true;
+                                    break;
+                                }
                             }
-                        }
-                        if (!foundParent) {
-                            HwmpRtable::LookupResult route = m_rtable->LookupReactive(source);
-                            if (route.retransmitter != Mac48Address::GetBroadcast()) {
-                                targetNode = route.retransmitter;
-                            } else {
-                                route = m_rtable->LookupProactive();
+                            if (!foundParent) {
+                                HwmpRtable::LookupResult route = m_rtable->LookupReactive(source);
                                 if (route.retransmitter != Mac48Address::GetBroadcast()) {
                                     targetNode = route.retransmitter;
+                                } else {
+                                    route = m_rtable->LookupProactive();
+                                    if (route.retransmitter != Mac48Address::GetBroadcast()) {
+                                        targetNode = route.retransmitter;
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    SendPrune(pruneInfo, targetNode, sourceIface, destination, source, 1);
-                    
-                    if (!isDuplicate) {
-                        m_lastPruneSent = Simulator::Now();
+                        SendPrune(pruneInfo, targetNode, sourceIface, destination, source, 1);
+                        
+                        if (!isDuplicate) {
+                            m_lastPruneSent = Simulator::Now();
+                        }
                     }
-                }
-            }     
-            else if (amInterested && !hasOtherPeers)
-            {
-                NS_LOG_DEBUG ("RECETOR INTELIGENTE: Consumi o pacote mas NÃO o retransmiti para o ar!");
-            }    
+                }     
+                else if (amInterested && !hasOtherPeers)
+                {
+                    NS_LOG_DEBUG ("RECETOR INTELIGENTE: Consumi o pacote mas NÃO o retransmiti para o ar!");
+                }    
 
-            return false; // Deita a cópia de retransmissão para o lixo
+                return false; // Deita a cópia de retransmissão para o lixo
+            }
         }
     }
 
@@ -711,6 +728,15 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
                                      destination, 
                                      protocolType, 
                                      plugin->first);
+
+                uint64_t uid = constPacket->GetUid();
+                // O tempo de espera deve ser superior ao Jitter aplicado
+                Time ackWaitTime = delay + MilliSeconds(20);
+                //Sends the packet if the neighbour lost the packet 
+                if (m_pendingAcks.find(uid) == m_pendingAcks.end()) {
+                    EventId retransmitEv = Simulator::Schedule(ackWaitTime, &HwmpProtocol::Retransmit, this, uid, routeReply, source, destination, protocolType, plugin->first);
+                    m_pendingAcks[uid] = {packetCopy->Copy(), retransmitEv, 0};
+                }
             }
         }
     }
@@ -1202,6 +1228,28 @@ HwmpProtocol::ReceivePerr(std::vector<FailedDestination> destinations,
     */
 }
 
+void 
+HwmpProtocol::Retransmit(uint64_t uid, RouteReplyCallback cb, Mac48Address src, Mac48Address dst, uint16_t protocol, uint32_t interface)
+{
+    if (m_pendingAcks.count(uid)) {
+        PendingAck &pending = m_pendingAcks[uid];
+        
+        if (pending.retries < 1) { // Apenas uma tentativa de retransmissão para não saturar
+            pending.retries++;
+            NS_LOG_INFO("Pacote " << uid << " não confirmado! A retransmitir...");
+            
+            // Tenta enviar a cópia do pacote que guardámos
+            cb(true, pending.packet->Copy(), src, dst, protocol, interface);
+            
+            // Reagenda a si própria para o caso desta tentativa também falhar
+            pending.retransmitEvent = Simulator::Schedule(MilliSeconds(30), &HwmpProtocol::Retransmit, this, uid, cb, src, dst, protocol, interface);
+        } else {
+            NS_LOG_DEBUG("Desistindo do pacote " << uid << " após falha na retransmissão.");
+            m_pendingAcks.erase(uid);
+        }
+    }
+}
+
 // new
 void
 HwmpProtocol::ReceivePrune(IePrune prune,
@@ -1327,6 +1375,11 @@ HwmpProtocol::StartPrune(Ptr<const Packet> packet,
     }
 
     m_TxPacketCount++;
+    if (m_TxPacketCount < 10)
+    {
+        NS_LOG_DEBUG("Warm-up: Ainda não processámos 10 pacotes. Abortando envio de Prune.");
+        return; // Exit the funtion without sending a Prune message to the neighbour
+    }
 
     double sigma = std::sqrt(m_nodeVarTtl);
     NS_LOG_DEBUG("Transmitter: " << transmitter);
