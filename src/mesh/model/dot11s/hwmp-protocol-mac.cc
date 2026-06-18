@@ -404,8 +404,8 @@ HwmpProtocolMac::SendPrune(IePrune prune, Mac48Address receiver)
     NS_LOG_DEBUG("HwmpProtocolMac::SendPrune: receiver = " << receiver);
     hdr.SetAddr2(m_parent->GetAddress()); // The sender of the prune
     NS_LOG_DEBUG("HwmpProtocolMac::SendPrune: addr2 = " << m_parent->GetAddress());
-    hdr.SetAddr3(prune.GetGroup());
-    NS_LOG_DEBUG("HwmpProtocolMac::SendPrune: addr3 = " << prune.GetGroup());
+    hdr.SetAddr3(m_protocol->GetAddress());
+    NS_LOG_DEBUG("HwmpProtocolMac::SendPrune: addr3 = " << m_protocol->GetAddress());
     hdr.SetAddr4(prune.GetOriginator());
     NS_LOG_DEBUG("HwmpProtocolMac::SendPrune: addr4 = " << prune.GetOriginator());
 
