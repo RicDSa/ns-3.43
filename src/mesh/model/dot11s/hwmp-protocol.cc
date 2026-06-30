@@ -201,7 +201,8 @@ HwmpProtocol::HwmpProtocol()
       m_pruneTimeout(Seconds(30)),
       m_device(nullptr),
       m_lastPruneSent(Seconds(0.0)),
-      m_RxPacketCount(0)
+      m_RxPacketCount(0),
+      m_pruneRxPackets(0)
 {
     NS_LOG_FUNCTION(this);
     m_coefficient = CreateObject<UniformRandomVariable>();
@@ -374,7 +375,6 @@ HwmpProtocol::IsPruned(Mac48Address src, Mac48Address dst, Mac48Address multicas
     return (it != m_pruneTable.end());
 }
 
-std::set<Mac48Address> HwmpProtocol::m_multicastGroupNodes;
 
 void
 HwmpProtocol::SetMulticastGroupNodes(Mac48Address multicastGroupNodes)
@@ -591,7 +591,6 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
         NS_LOG_DEBUG("CURRENT NODE: " << GetAddress());
         NS_LOG_DEBUG("TTL: " << (uint32_t)tag.GetTtl());
 
-        m_RxPacketCount++;
 
         // channel IDs where we have already sent broadcast:
         std::vector<uint16_t> channels;
@@ -625,37 +624,22 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
                 {
                     ss << *it << " ";
                 }
-                // NS_LOG_UNCOND(ss.str());
             }
 
             for (auto i = receivers.begin(); i != receivers.end(); i++)
             {
-                // Forward the packet to all receivers:
-                Ptr<Packet> packetCopy = packet->Copy();
-
-                // print m_pruneTable
-                NS_LOG_DEBUG("Current prune table:");
-                for (const auto& entry : m_pruneTable)
-                {
-                    NS_LOG_DEBUG("Src: " << std::get<0>(entry.first)
-                                         << ", Dst: " << std::get<1>(entry.first)
-                                         << ", MulticastGroup: " << std::get<2>(entry.first)
-                                         << ", Time: " << entry.second.GetSeconds() << "s");
-                }
-                NS_LOG_DEBUG("END prune table");
-
+                
                 // See if all the peer links are pruned for this multicast group
-                auto peerlinks = GetLastActivePeerAddresses();
+                const auto& peerlinks = GetLastActivePeerAddresses();
                 uint16_t prunedCount = 0;
                 uint16_t peerCount = 0;
-
                 std::vector<Mac48Address> unprunedPeers;
 
                 for (const auto& entry : peerlinks)
                 {
                     Mac48Address peer = entry.first;
 
-                    if (entry.second == 0) // peer is bellow
+                    if ((entry.second == 0 || entry.second == 2 ) && peer!=transmitter) // peer is considered bellow and beside him is was not the transmitter
                     {
                         peerCount++;
                         if (IsPruned(GetAddress(), peer, destination) == true)
@@ -704,7 +688,7 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
                                 NS_LOG_DEBUG("All peer links pruned for multicast group "
                                             << destination << ". Dropping packet.");
                                 routeReply(false,
-                                        packetCopy,
+                                        packet,
                                         source,
                                         destination,
                                         protocolType,
@@ -714,6 +698,21 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
                         }
                     }
                 }
+
+
+                // Forward the packet to all receivers:
+                Ptr<Packet> packetCopy = packet->Copy();
+
+                // print m_pruneTable
+                NS_LOG_DEBUG("Current prune table:");
+                for (const auto& entry : m_pruneTable)
+                {
+                    NS_LOG_DEBUG("Src: " << std::get<0>(entry.first)
+                                         << ", Dst: " << std::get<1>(entry.first)
+                                         << ", MulticastGroup: " << std::get<2>(entry.first)
+                                         << ", Time: " << entry.second.GetSeconds() << "s");
+                }
+                NS_LOG_DEBUG("END prune table");
 
                 // Forward the packet to all receivers:
                 // Ptr<Packet> packetCopy = packet->Copy();
@@ -1278,7 +1277,7 @@ HwmpProtocol::Retransmit(uint64_t uid, RouteReplyCallback cb, Mac48Address src, 
     }
 }
 
-// new
+
 void
 HwmpProtocol::ReceivePrune(IePrune prune,
                            const std::vector<std::pair<Mac48Address, uint32_t>>& pruneUnits,
@@ -1411,8 +1410,8 @@ HwmpProtocol::StartPrune(Ptr<const Packet> packet,
         m_nodeAvgTtl = 32;
     }
 
-    m_RxPacketCount++;
-    if (m_RxPacketCount < 10)
+    m_pruneRxPackets++;
+    if (m_pruneRxPackets < 10)
     {
         NS_LOG_DEBUG("Warm-up: Ainda não processámos 10 pacotes. Abortando envio de Prune.");
         return; // Exit the funtion without sending a Prune message to the neighbour
@@ -1470,11 +1469,12 @@ HwmpProtocol::StartPrune(Ptr<const Packet> packet,
     NS_LOG_DEBUG("IsPruned(" << transmitter << ", " << GetAddress() << ", " << group
                              << ") returned " << pruned);
 
-    if (m_TxPacketCount < 10)
+    
+    /*if (m_TxPacketCount < 10)
     {
         NS_LOG_DEBUG("Skip prune for the ten first packets");
         return;
-    }
+    }*/
     if (IsPruned(transmitter, GetAddress(), group))
     {
         NS_LOG_DEBUG("Prune active for " << transmitter << " -> " << GetAddress());
@@ -1502,7 +1502,7 @@ HwmpProtocol::StartPrune(Ptr<const Packet> packet,
 
         if (peerDown == 0)
         {
-            if (g.find(GetAddress()) != g.end()) // if is in the multicast group, we do not prune
+            if (g.find(group) != g.end()) // if is in the multicast group, we do not prune
             {
                 NS_LOG_DEBUG("Node " << GetAddress() << " is in the multicast group; not pruning.");
                 return;
@@ -1540,7 +1540,7 @@ HwmpProtocol::StartPrune(Ptr<const Packet> packet,
             if (count == peerDown)
             {
                 NS_LOG_DEBUG("All peers below are pruned for group " << group);
-                if (g.find(GetAddress()) !=
+                if (g.find(group) !=
                     g.end()) // if is in the multicast group, we do not prune
                 {
                     NS_LOG_DEBUG("Node " << GetAddress()
@@ -2212,7 +2212,7 @@ HwmpProtocol::ShouldPrune (Ptr<const Packet> packet, Mac48Address destination)
         // Aceita nós ABAIXO (0) e NÓS AO MESMO NÍVEL (2)
         if (peer.second == 0 || peer.second == 2) { 
             
-            bool isChildPruned = IsPruned(peer.first, GetAddress(), destination);
+            bool isChildPruned = IsPruned(GetAddress(), peer.first, destination);
 
             if (!isChildPruned) { // Encontrámos um nó abaixo que não desistiu do vídeo! 
                 hasDownstreamDependents = true;

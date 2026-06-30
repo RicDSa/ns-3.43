@@ -208,7 +208,7 @@ class HwmpProtocol : public MeshL2RoutingProtocol
 
     void SetMulticastGroupNodes(Mac48Address multicastGroupNodes);
     // accessor for everyone
-    static const std::set<Mac48Address>& GetMulticastGroupNodes();
+    const std::set<Mac48Address>& GetMulticastGroupNodes();
 
 
 
@@ -277,7 +277,7 @@ class HwmpProtocol : public MeshL2RoutingProtocol
      */
     bool ShouldPrune (Ptr<const Packet> packet, Mac48Address destination);
 
-    static std::set<Mac48Address> m_multicastGroupNodes; // set of multicast group nodes
+    std::set<Mac48Address> m_multicastGroupNodes; // set of multicast group nodes
     // key = (originator, multicastGroup)
     std::map<std::pair<Mac48Address, Mac48Address>, bool> m_seenFirstMulticast;
 
@@ -294,6 +294,7 @@ class HwmpProtocol : public MeshL2RoutingProtocol
 
     uint32_t m_RxPacketCount = 0;
     uint32_t m_TxPacketCount = 0;
+    uint32_t m_pruneRxPackets = 0;
     // End of new code
 
     void DoInitialize() override;
