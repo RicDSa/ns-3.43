@@ -63,6 +63,8 @@ enum PruneReasonCode : uint8_t
     PRUNE_REASON_NOT_INTERESTED = 1, // “I no longer need this multicast flow”
     PRUNE_REASON_LINK_BROKEN = 2,    // “Peering link to me went down”
     PRUNE_REASON_CONGESTION = 3,     // “Prune due to congestion”
+    PRUNE_REASON_QUERY = 4,          
+    PRUNE_REASON_REFRESH = 5
 };
 
 /**
@@ -259,14 +261,22 @@ class HwmpProtocol : public MeshL2RoutingProtocol
     void EWMANode(uint8_t ttl);
     void EWMASender(uint8_t ttl, Mac48Address sender);
     
+    struct PruneTableValue
+    {
+        Time timestamp;
+        EventId queryTimerEvent;  // Evento para disparar o PRUNE_QUERY
+        EventId pruneTimerEvent;  // Evento final de expiração do PRUNE
+    };
 
     // Map to store prune entries
     // key = (source, destination, multicastGroup)
-    static std::map<std::tuple<Mac48Address, Mac48Address, Mac48Address>, Time> m_pruneTable;
+    static std::map<std::tuple<Mac48Address, Mac48Address, Mac48Address>, PruneTableValue> m_pruneTable;
     Time m_pruneTimeout;  // soft‐state timeout for prune entries
     EventId m_pruneEvent; // event handle for our recurring prune task
 
     void AddPruneEntry(Mac48Address src, Mac48Address dst, Mac48Address multicastGroup);
+    void SendPruneQuery(Mac48Address src, Mac48Address dst, Mac48Address multicastGroup);
+    void SendPruneRefresh(Mac48Address src, Mac48Address dst, Mac48Address multicastGroup);
 
     bool IsPruned(Mac48Address src, Mac48Address dst, Mac48Address multicastGroup) const;
 
@@ -290,7 +300,7 @@ class HwmpProtocol : public MeshL2RoutingProtocol
 
     static void ExpirePruneEntry(Mac48Address src, Mac48Address dst, Mac48Address multicastGroup);
 
-    void PeerLinks();
+    void PeerLinks();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
 
     uint32_t m_RxPacketCount = 0;
     uint32_t m_TxPacketCount = 0;
@@ -694,6 +704,9 @@ class HwmpProtocol : public MeshL2RoutingProtocol
     bool m_doFlag;                  //!< Destination only HWMP flag
     bool m_rfFlag;                  //!< Reply and forward flag
     bool m_enableFloodAndPrune;     //!< Flag to Enable Flood and Prune in the current node
+    bool m_enableM2u;             // Ativa/Desativa a conversão Multicast-to-Unicast
+    bool m_enableImplicitAck;     // Ativa/Desativa as retransmissões por Implicit ACK
+    bool m_enableFirstToArrive;   // Ativa/Desativa o filtro First-to-Arrive (descarte de duplicados lentos
     double m_pruneThreshold;
     ///@}
 

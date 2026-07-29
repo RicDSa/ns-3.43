@@ -46,6 +46,7 @@ namespace dot11s
 
 NS_OBJECT_ENSURE_REGISTERED(HwmpProtocol);
 
+//This function serves to change the varibles externaly from the protocol in the simulation file(ex: mesh1.cc)
 TypeId
 HwmpProtocol::GetTypeId()
 {
@@ -161,6 +162,21 @@ HwmpProtocol::GetTypeId()
                            TimeValue (MilliSeconds (10)), // Valor por defeito 10ms
                            MakeTimeAccessor (&HwmpProtocol::m_maxJitter),
                            MakeTimeChecker ())
+            .AddAttribute("EnableM2U",
+                          "Activates or Deactivates Multicast-to-Unicast conversion.",
+                          BooleanValue(true),
+                          MakeBooleanAccessor(&HwmpProtocol::m_enableM2u),
+                          MakeBooleanChecker())
+            .AddAttribute("EnableImplicitAck",
+                          "Activates or Deactivates Implicit ACK retransmission logic.",
+                          BooleanValue(true),
+                          MakeBooleanAccessor(&HwmpProtocol::m_enableImplicitAck),
+                          MakeBooleanChecker())
+            .AddAttribute("EnableFirstToArrive",
+                          "Activates or Deactivates First-to-Arrive packet filtering.",
+                          BooleanValue(true),
+                          MakeBooleanAccessor(&HwmpProtocol::m_enableFirstToArrive),
+                          MakeBooleanChecker())
             .AddAttribute("EnableFloodAndPrune",
                           "Activates or Deactivates the mechanism of Flood-and-Prune.",
                           BooleanValue(false),
@@ -191,7 +207,10 @@ HwmpProtocol::HwmpProtocol()
       m_unicastDataThreshold(1),
       m_doFlag(false),
       m_rfFlag(false),
-      m_enableFloodAndPrune(false),
+      m_enableFloodAndPrune(true),
+      m_enableM2u(true),
+      m_enableImplicitAck(true),
+      m_enableFirstToArrive(true),
       m_maxCacheSize(1000),
       m_nodeTtlSum(0),   // new
       m_nodeTtlCount(0), // new
@@ -215,6 +234,7 @@ HwmpProtocol::~HwmpProtocol()
     NS_LOG_FUNCTION(this);
 }
 
+//This function serves to initialize the dinamic operations of the protocol when the simulation starts
 void
 HwmpProtocol::DoInitialize()
 {
@@ -228,6 +248,7 @@ HwmpProtocol::DoInitialize()
     }
 }
 
+//This function prevents memory leaks and segmentation faults when simulator is destroyed
 void
 HwmpProtocol::DoDispose()
 {
@@ -248,7 +269,7 @@ HwmpProtocol::DoDispose()
 }
 
 
-// NEW NEW CODE
+//This function allows the protocol to consult the information of the interfaces at any time
 void
 HwmpProtocol::SetDevice(Ptr<MeshPointDevice> device)
 {
@@ -271,12 +292,14 @@ HwmpProtocol::GetActivePeerLinks() const
     return pmp->GetPeerLinks();
 }
 
+//This function allows that other functions of the code consult their list of internal neighbours
 const std::map<Mac48Address, uint32_t>&
 HwmpProtocol::GetLastActivePeerAddresses() const
 {
     return m_lastActivePeerAddrs;
 }
 
+//This function updates their imediate list of neighbours that can be used to forwarding packets and calculate the Prunes
 void
 HwmpProtocol::PeerLinks()
 {
@@ -302,6 +325,7 @@ HwmpProtocol::PeerLinks()
     NS_LOG_DEBUG("END LAST ACTIVE PEER ADDRESSES");
 }
 
+//This function maintains a continuous monituring of the health of the wirelless connections in background 
 void
 HwmpProtocol::StartLinkMonitor(Time interval)
 {
@@ -345,28 +369,78 @@ HwmpProtocol::DoLinkCheck()
     m_linkCheckEvent = Simulator::Schedule(m_linkCheckInterval, &HwmpProtocol::DoLinkCheck, this);
 }
 
-std::map<std::tuple<Mac48Address, Mac48Address, Mac48Address>, Time> HwmpProtocol::m_pruneTable;
+std::map<std::tuple<Mac48Address, Mac48Address, Mac48Address>, HwmpProtocol::PruneTableValue> HwmpProtocol::m_pruneTable;
 
+//This function adds in the prune entry to the prune table
 void
 HwmpProtocol::AddPruneEntry(Mac48Address src, Mac48Address dst, Mac48Address multicastGroup)
 {
-    NS_LOG_INFO("Adding prune entry for src: " << src << ", dst: " << dst
-                                               << ", multicastGroup: " << multicastGroup);
-    m_pruneTable[{src, dst, multicastGroup}] = Simulator::Now();
+    auto key = std::make_tuple(src, dst, multicastGroup);
 
-    // schedule a one-shot event to remove it in m_pruneTimeout
-    Simulator::Schedule(m_pruneTimeout, &HwmpProtocol::ExpirePruneEntry, src, dst, multicastGroup);
+    // Cancelar eventos antigos se a entrada já existir na tabela
+    if (m_pruneTable.find(key) != m_pruneTable.end())
+    {
+        m_pruneTable[key].queryTimerEvent.Cancel();
+        m_pruneTable[key].pruneTimerEvent.Cancel();
+    }
+
+    PruneTableValue val;
+    val.timestamp = Simulator::Now();
+
+    Time queryDelta = Seconds(2.0); // Dispara a Query 2 segundos antes de o Prune expirar
+    Time queryTime = (m_pruneTimeout > queryDelta) ? (m_pruneTimeout - queryDelta) : Seconds(0.1);
+
+    // 1. Agendar o envio do PRUNE_QUERY pelo Nó acima
+    val.queryTimerEvent = Simulator::Schedule(queryTime, 
+                                             &HwmpProtocol::SendPruneQuery, 
+                                             this, src, dst, multicastGroup);
+
+    // 2. Agendar a expiração final (fallback se o nó abaixo não responder)
+    val.pruneTimerEvent = Simulator::Schedule(m_pruneTimeout, 
+                                             &HwmpProtocol::ExpirePruneEntry, 
+                                             src, dst, multicastGroup);
+
+    m_pruneTable[key] = val;
 }
 
+//This function removes the prune entry to the prune table
 void
 HwmpProtocol::ExpirePruneEntry(Mac48Address src, Mac48Address dst, Mac48Address multicastGroup)
 {
     NS_LOG_INFO("Expiring prune entry for src: " << src << ", dst: " << dst
                                                  << ", multicastGroup: " << multicastGroup);
     // remove from the table and forget the EventId
-    m_pruneTable.erase({src, dst, multicastGroup});
+    auto key = std::make_tuple(src, dst, multicastGroup);
+    auto it = m_pruneTable.find(key);
+    if (it != m_pruneTable.end())
+    {
+        it->second.queryTimerEvent.Cancel();
+        it->second.pruneTimerEvent.Cancel();
+        m_pruneTable.erase(it);
+    }
 }
 
+void
+HwmpProtocol::SendPruneQuery(Mac48Address src, Mac48Address dst, Mac48Address multicastGroup)
+{
+    NS_LOG_INFO("Nó " << GetAddress() << " enviou PRUNE_QUERY para " << dst << " no grupo " << multicastGroup);
+
+    std::vector<std::pair<Mac48Address, uint32_t>> entries;
+    // Usa o código PRUNE_REASON_QUERY para identificar a pergunta
+    entries.emplace_back(multicastGroup, PRUNE_REASON_QUERY);
+
+    // Procura a interface adequada
+    uint32_t iface = 0;
+    for (const auto& plugin : m_interfaces)
+    {
+        iface = plugin.first;
+        break;
+    }
+
+    SendPrune(entries, dst, iface, multicastGroup, src, 1);
+}
+
+//This function verifies if the prune entry exists in the prune table
 bool
 HwmpProtocol::IsPruned(Mac48Address src, Mac48Address dst, Mac48Address multicastGroup) const
 {
@@ -375,7 +449,8 @@ HwmpProtocol::IsPruned(Mac48Address src, Mac48Address dst, Mac48Address multicas
     return (it != m_pruneTable.end());
 }
 
-
+// This functions SetMulticastGroupNodes and GetMulticastGroupNodes  
+// they let the node know if its local application is registered and interested in consuming the video.
 void
 HwmpProtocol::SetMulticastGroupNodes(Mac48Address multicastGroupNodes)
 {
@@ -389,6 +464,7 @@ HwmpProtocol::GetMulticastGroupNodes()
     return m_multicastGroupNodes;
 }
 
+//This function serves to calculate a estimate the number of hops to the Font
 void
 HwmpProtocol::EWMANode(uint8_t ttl)
 {
@@ -426,6 +502,8 @@ HwmpProtocol::InvokeRouteReply (RouteReplyCallback cb, bool result, Ptr<Packet> 
   cb(result, packet, src, dst, protocol, interface);
 }
 
+// In this function one of the most important in the protocol decides if a data packet is destroyed(pruned),
+// retransmitted with delay, converting for a reliable hardware delivery, or sent for route discovery 
 bool
 HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
                             Mac48Address destination, Ptr<const Packet> constPacket,
@@ -436,17 +514,17 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
     if (m_RxPacketCount <= 5) 
     {
         NS_LOG_DEBUG("Warm-up: Ignorando lógica de pruning para os primeiros 5 pacotes.");
-        // Deixa o código seguir para a lógica normal de encaminhamento do HWMP abaixo
+        // Let the code proceed to the normal HWMP routing logic below.
     }
     else{
-        // Verificamos se é um pacote de dados (não de gestão) e se o Prune está ativo
+        //Verifies if it is a data packet and is a active prune
         if (m_enableFloodAndPrune && (source != m_address)) 
         {
             bool hasOtherPeers = true; 
             HwmpTag tag;
             Mac48Address transmitter = Mac48Address::GetBroadcast();
             
-            // Descobre quem nos enviou fisicamente este pacote e conta os outros vizinhos
+            // Discovers who sent phisically this packet and conts the other neighbours
             if (constPacket->PeekPacketTag(tag)) {
                 transmitter = tag.GetAddress();
                 hasOtherPeers = false; 
@@ -460,7 +538,7 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
 
             bool amInterested = (m_multicastGroupNodes.find(destination) != m_multicastGroupNodes.end());
 
-            //Detetar se o pacote é um DUPLICADO (veio pelo caminho mais lento!)
+            //Dectets if the packet is a Duplicate
             bool isDuplicate = false;
             for (auto it = m_seenPackets.begin(); it != m_seenPackets.end(); ++it) {
                 if (*it == constPacket->GetUid()) {
@@ -478,15 +556,14 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
                 }
             }
 
-            // CONDIÇÃO MESTRE
             if (ShouldPrune(constPacket, destination) || !hasOtherPeers) 
             {
-                // PODAMOS PELO AR SE: (1) Não queremos o vídeo OU (2) Recebemos um pacote repetido
+                // We Prune if: (1) dont want the multicast OR (2) Receive a duplicate packet
                 if (!amInterested || isDuplicate) 
                 {
                     NS_LOG_DEBUG ("PRUNE Ativado no nó " << m_address << ". Motivo: " << (isDuplicate ? "Duplicado!" : "Folha Morta!"));
                     
-                    // Os Prunes de duplicados não respeitam o limite de 3 segundos, disparam logo!
+                    //If the Duplicated Prunes don't respect the 3-second limit;
                     if (m_lastPruneSent.IsZero() || Simulator::Now() - m_lastPruneSent > Seconds(3.0) || isDuplicate) 
                     {
                         std::vector<std::pair<Mac48Address, uint32_t>> pruneInfo;
@@ -494,11 +571,11 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
                         Mac48Address targetNode = Mac48Address::GetBroadcast();
                     
                         if (isDuplicate) {
-                            //O Prune vai em Unicast direto para o nó atrasado!
+                            //Prune goes in Unicast directly to the delayed node
                             targetNode = transmitter;
                             NS_LOG_INFO("Recetor " << m_address << " enviou Prune para cortar o caminho lento de " << targetNode);
                         } else {
-                            // LÓGICA NORMAL DE FOLHA MORTA: Procura o Pai (Valor 1)
+                            // NORMAL DEAD LEAF LOGIC: Seek the Father (Value 1)
                             bool foundParent = false;
                             for (const auto& peer : m_lastActivePeerAddrs) {
                                 if (peer.second == 1) { 
@@ -532,7 +609,7 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
                     NS_LOG_DEBUG ("RECETOR INTELIGENTE: Consumi o pacote mas NÃO o retransmiti para o ar!");
                 }    
 
-                return false; // Deita a cópia de retransmissão para o lixo
+                return false;
             }
         }
     }
@@ -575,11 +652,11 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
     }
     if (destination.IsGroup())
     {
-        if (sourceIface != GetMeshPoint()->GetIfIndex() && !m_enableFloodAndPrune)
+        /*if (sourceIface != GetMeshPoint()->GetIfIndex() && !m_enableFloodAndPrune)
         {
             NS_LOG_DEBUG("Flood and Prune disabled on this node. Dropping multicast forward.");
             return false; 
-        }
+        }*/
 
         Mac48Address transmitter = tag.GetAddress();
         
@@ -709,8 +786,7 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
                 {
                     NS_LOG_DEBUG("Src: " << std::get<0>(entry.first)
                                          << ", Dst: " << std::get<1>(entry.first)
-                                         << ", MulticastGroup: " << std::get<2>(entry.first)
-                                         << ", Time: " << entry.second.GetSeconds() << "s");
+                                         << ", MulticastGroup: " << std::get<2>(entry.first));
                 }
                 NS_LOG_DEBUG("END prune table");
 
@@ -722,15 +798,15 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
                 //
 
                 Mac48Address targetAddress;
-                if (m_RxPacketCount <= 5 || unprunedPeers.size() > 1) {
-                    // Warm-up ou múltiplos recetores: usamos Broadcast
+                if (m_RxPacketCount <= 5 || unprunedPeers.size() > 1 || !m_enableM2u) {
+                    // Warm-up or multiple receivers, we send in broadcast
                     targetAddress = Mac48Address::GetBroadcast();
-                } else if (unprunedPeers.size() == 1) {
-                    // M2U: Apenas um recetor: convertemos para Unicast
+                } else if (m_enableM2u && unprunedPeers.size() == 1) {
+                    // If there is only a receiver then we send in unicast
                     targetAddress = unprunedPeers[0];
                     NS_LOG_INFO("M2U: Enviando Unicast para " << targetAddress << " no nó " << GetAddress());
                 } else {
-                    // Ninguém interessado: ignoramos a retransmissão
+                    // If no one is interested, then ignores the retransmission
                     continue; 
                 }
 
@@ -753,9 +829,8 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
                                      plugin->first);
 
                 if (m_enableFloodAndPrune) {
-                    if (targetAddress.IsBroadcast()) {
+                    if (m_enableImplicitAck && targetAddress.IsBroadcast()) {
                         uint64_t uid = constPacket->GetUid();
-                        // O tempo de espera deve ser superior ao Jitter aplicado
                         Time ackWaitTime = delay + MilliSeconds(20);
                         // Sends the packet if the neighbour lost the packet 
                         if (m_pendingAcks.find(uid) == m_pendingAcks.end()) {
@@ -781,6 +856,8 @@ HwmpProtocol::RequestRoute(uint32_t sourceIface, Mac48Address source,
     return true;
 }
 
+// This function returns the clean packet to the IP layer (Layer 3) 
+// and displays successful receive logs in the console.
 bool
 HwmpProtocol::RemoveRoutingStuff(uint32_t fromIface,
                                  const Mac48Address source,
@@ -807,6 +884,7 @@ HwmpProtocol::RemoveRoutingStuff(uint32_t fromIface,
     return true;
 }
 
+// This function ensures standard operation of traditional HWMP reactive point-to-point routing.
 bool
 HwmpProtocol::ForwardUnicast(uint32_t sourceIface,
                              const Mac48Address source,
@@ -902,6 +980,7 @@ HwmpProtocol::ForwardUnicast(uint32_t sourceIface,
     }
 }
 
+// This function dynamically creates routes in the network, ensuring that only the fastest path (lowest latency) is saved.
 void
 HwmpProtocol::ReceivePreq(IePreq preq,
                           Mac48Address from,
@@ -924,7 +1003,7 @@ HwmpProtocol::ReceivePreq(IePreq preq,
         }
         
         // 2. LÓGICA FIRST-TO-ARRIVE 
-        if (i->second.first == preq.GetOriginatorSeqNumber())
+        if (m_enableFirstToArrive && i->second.first == preq.GetOriginatorSeqNumber())
         {
             freshInfo = false;   
             // Como este PREQ tem o mesmo número de sequência do que já temos guardado,
@@ -1092,6 +1171,7 @@ HwmpProtocol::ReceivePreq(IePreq preq,
     }
 }
 
+// This function consolidates the fast, two-way reactive route between origin and destination.
 void
 HwmpProtocol::ReceivePrep(IePrep prep,
                           Mac48Address from,
@@ -1115,7 +1195,7 @@ HwmpProtocol::ReceivePrep(IePrep prep,
         }
         
         // 2. LÓGICA FIRST-TO-ARRIVE PARA PREP
-        if (i->second.first == sequence)
+        if (m_enableFirstToArrive && i->second.first == sequence)
         {
             freshInfo = false;
             // Chegou em 2º lugar, por isso ignoramos imediatamente
@@ -1207,6 +1287,7 @@ HwmpProtocol::ReceivePrep(IePrep prep,
                         result.retransmitter);
 }
 
+// This function verifies if the error affects active local routes and forwards the information.
 void
 HwmpProtocol::ReceivePerr(std::vector<FailedDestination> destinations,
                           Mac48Address from,
@@ -1255,6 +1336,8 @@ HwmpProtocol::ReceivePerr(std::vector<FailedDestination> destinations,
     */
 }
 
+// This function ensures reliable delivery of broadcast/multicast traffic over noisy radio channels by recovering packets that have suffered collisions.
+// Is used for our mechanism of Implicit ACK
 void 
 HwmpProtocol::Retransmit(uint64_t uid, RouteReplyCallback cb, Mac48Address src, Mac48Address dst, uint16_t protocol, uint32_t interface)
 {
@@ -1277,7 +1360,7 @@ HwmpProtocol::Retransmit(uint64_t uid, RouteReplyCallback cb, Mac48Address src, 
     }
 }
 
-
+//This function serves to receive and process the prune messages
 void
 HwmpProtocol::ReceivePrune(IePrune prune,
                            const std::vector<std::pair<Mac48Address, uint32_t>>& pruneUnits,
@@ -1285,27 +1368,73 @@ HwmpProtocol::ReceivePrune(IePrune prune,
                            uint32_t interface,
                            Mac48Address fromMp)
 {
-    // === Filtrar o Broadcast ===
-    /*if (prune.GetReceiver() != GetAddress()) {
-        NS_LOG_DEBUG("Prune Broadcast recebido, mas o alvo era " << prune.GetReceiver() << ". Ignorado.");
-        return;
-    }*/
 
     NS_LOG_FUNCTION(this << from << interface << fromMp);
     
-    // Read the Multicast Group from the Prune packet
-    //Mac48Address group = prune.GetGroup();
-
-    //NS_LOG_DEBUG("I am " << GetAddress() << ", received PRUNE from " << fromMp << " for Group " << group);
     for (const auto& entry : pruneUnits)
     {
         Mac48Address groupToPrune = entry.first;
-        //uint32_t reason = entry.second;
+        uint32_t reason = entry.second;
 
-        NS_LOG_INFO("O Nó " << GetAddress() << ", received PRUNE from " << fromMp << " for Group " << groupToPrune);
+        // 1. SE RECEBEMOS UMA QUERY DO NÓ ACIMA:
+        if (reason == PRUNE_REASON_QUERY)
+        {
+            NS_LOG_INFO("Nó Filho " << GetAddress() << " recebeu PRUNE_QUERY de " << fromMp << " para " << groupToPrune);
 
-        AddPruneEntry(GetAddress(), fromMp, groupToPrune);
+            bool amInterested = (m_multicastGroupNodes.find(groupToPrune) != m_multicastGroupNodes.end());
+            
+            // Verifica se tem dependentes a jusante
+            bool hasDownstreamDependents = false;
+            for (auto const& peer : m_lastActivePeerAddrs)
+            {
+                if ((peer.second == 0 || peer.second == 2) && !IsPruned(GetAddress(), peer.first, groupToPrune))
+                {
+                    hasDownstreamDependents = true;
+                    break;
+                }
+            }
+
+            // Se CONTINUA sem membros nem recetores a jusante -> Responde com REFRESH (com Jitter aleatório)
+            if (!amInterested && !hasDownstreamDependents)
+            {
+                Time randomJitter = MilliSeconds(m_jitter->GetValue(0, 10)); // Jitter 0-10ms para evitar colisões
+                Simulator::Schedule(randomJitter, &HwmpProtocol::SendPruneRefresh, this, fromMp, GetAddress(), groupToPrune);
+            }
+            else
+            {
+                NS_LOG_INFO("Nó Abaixo " << GetAddress() << " agora TEM interesse! Ignorando Query para deixar expirar a poda.");
+            }
+        }
+        // 2. SE O NÓ PAI RECEBEU O REFRESH DO NÓ FILHO:
+        else if (reason == PRUNE_REASON_REFRESH)
+        {
+            // Renova o temporizador na Prune Table sem re-inundar pacotes de vídeo!
+            AddPruneEntry(GetAddress(), fromMp, groupToPrune);
+        }
+        // 3. MENSAGEM DE PODA NORMAL (F&P Clássico):
+        else
+        {
+            AddPruneEntry(GetAddress(), fromMp, groupToPrune);
+        }
     }
+}
+
+void
+HwmpProtocol::SendPruneRefresh(Mac48Address parentAddress, Mac48Address childAddress, Mac48Address multicastGroup)
+{
+    NS_LOG_INFO("Nó abaixo " << GetAddress() << " enviou PRUNE_REFRESH para o nó acima " << parentAddress);
+
+    std::vector<std::pair<Mac48Address, uint32_t>> entries;
+    entries.emplace_back(multicastGroup, PRUNE_REASON_REFRESH);
+
+    uint32_t iface = 0;
+    for (const auto& plugin : m_interfaces)
+    {
+        iface = plugin.first;
+        break;
+    }
+
+    SendPrune(entries, parentAddress, iface, multicastGroup, childAddress, 1);
 }
 
 // end
@@ -1367,6 +1496,8 @@ HwmpProtocol::SendPrune(std::vector<std::pair<Mac48Address, uint32_t>>& entries,
     m_stats.initiatedPrune++;
 }
 
+// This function is the brain of the pruning algorithm, figuring out who's lower down in the topology 
+// and cutting unnecessary branches in the video distribution.
 void
 HwmpProtocol::StartPrune(Ptr<const Packet> packet,
                          Mac48Address transmitter,
@@ -1461,8 +1592,7 @@ HwmpProtocol::StartPrune(Ptr<const Packet> packet,
     for (const auto& entry : m_pruneTable)
     {
         NS_LOG_DEBUG("Src: " << std::get<0>(entry.first) << ", Dst: " << std::get<1>(entry.first)
-                             << ", MulticastGroup: " << std::get<2>(entry.first)
-                             << ", Time: " << entry.second.GetSeconds() << "s");
+                             << ", MulticastGroup: " << std::get<2>(entry.first));
     }
     NS_LOG_DEBUG("END prune table1");
     bool pruned = IsPruned(transmitter, GetAddress(), group);
@@ -1549,8 +1679,6 @@ HwmpProtocol::StartPrune(Ptr<const Packet> packet,
                 }
                 else
                 {
-                    //NS_LOG_DEBUG("Node " << GetAddress()
-                    //                     << " is not in the multicast group; pruning.");
                     std::vector<std::pair<Mac48Address, uint32_t>> entries;
                     entries.emplace_back(group, PRUNE_REASON_NOT_INTERESTED);
                     SendPrune(entries,     // entries
@@ -1608,6 +1736,7 @@ HwmpProtocol::Install(Ptr<MeshPointDevice> mp)
     return true;
 }
 
+// This function ensures resiliency by clearing invalid routes immediately after a loss of signal.
 void
 HwmpProtocol::PeerLinkStatus(Mac48Address meshPointAddress,
                              Mac48Address peerAddress,
@@ -2165,6 +2294,8 @@ HwmpProtocol::ResetStats()
     }
 }
 
+// This function decides whether the retransmission of a specific video packet 
+// should be blocked to conserve radio resources.
 bool
 HwmpProtocol::ShouldPrune (Ptr<const Packet> packet, Mac48Address destination)
 {
